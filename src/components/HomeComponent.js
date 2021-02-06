@@ -7,6 +7,7 @@ import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import LeaveReview from './LeaveReviewComponent';
+import Card from './CardComponent';
 
 const SectionHero = () => {
     return(
@@ -93,50 +94,12 @@ const SectionDailyFood = () => {
     );
 }
 
-class RenderDiscountCard extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            itemAmount: 1
-        }
-        this.handleInputChange = this.handleInputChange.bind(this);
-    }
-    
-    handleInputChange(event){
-        this.setState({itemAmount: event.target.value});
-    }
-    render(){
-        return(
-            <div className="card item">
-                <div className="image-container">
-                    <img className="card-img-top" src="assets/images/lunch.png" alt=""/>
-                </div>
-                <div className="card-body">
-                    <h3 className="discount">-25%</h3>
-                    <h4 className="card-title text-left food-name">Pizza</h4>
-                    <p className="content">A very delicious pizza</p>
-                    <div className="row bottom-row">
-                        <div className="col-md-6">
-                            <p className="price mb-0" style={{textDecoration: 'line-through'}}>25,000</p>
-                            <p className="price actual_price">35,000</p>
-                        </div>
-                        <p className="col-md-6 text-right">
-                            <input type="number" name="quantity" onChange={this.state.handleInputChange} defaultValue={1} min='1' className="quantity" />
-                        </p>
-                    </div>
-                    <button className="btn order-btn">add to cart</button>
-                </div>
-            </div>
-        );
-    }
-}
-
 class SectionDiscountFoods extends Component{
     render(){
         var discountFoods = [];
         for (var i=0; i<5; i++){
             discountFoods.push(
-                <RenderDiscountCard key={i} />
+                <Card key={i} type={'discount'} />
             );
         }
         return(
@@ -166,7 +129,7 @@ const RenderReview = (props) => {
                 <h3 className="name text-center">Black@Tiger</h3>
                 <div className="rating-block text-center">
                     <span>Rating:</span>
-                    <FontAwesomeIcon icon={faStar} className="fas star checked"></FontAwesomeIcon>
+                    <FontAwesomeIcon icon={faStar} className="star checked"></FontAwesomeIcon>
                     <FontAwesomeIcon icon={faStar} className="fas star checked"></FontAwesomeIcon>
                     <FontAwesomeIcon icon={faStar} className="fas star checked"></FontAwesomeIcon>
                     <FontAwesomeIcon icon={faStar} className="fas star checked"></FontAwesomeIcon>

@@ -7,6 +7,7 @@ import Login from './LoginComponent';
 import Signup from './SignupComponent';
 import ContactUs from './ContactUsComponent';
 import TableOrder from './TableOrderComponent';
+import Menu from './MenuComponent';
 
 class Main extends Component {
     render(){
@@ -15,8 +16,8 @@ class Main extends Component {
                 <Navbar />
                 <Switch>
                     <Route path='/home' component={Home} />
-                    {/* <Route path='/menu' component={Menu} />
-                    <Route path='/drinks' component={Drinks} />
+                    <Route path='/menu' component={Menu} />
+                    {/*<Route path='/drinks' component={Drinks} />
                     <Route path='/dashboard' component={Dashboard} /> */}
                     <Redirect to='/home' />
                 </Switch>

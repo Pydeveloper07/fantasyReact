@@ -14,7 +14,7 @@ function Navbar(){
                 <div className="collapse navbar-collapse col-md-10 col-lg-10" id="navbarText">
                     <ul className="navbar-nav p-0 col-md-9 col-lg-9 flex-center">
                         <li className="nav-item active">
-                            <a className="nav-link" href="#menu">Menu <span className="sr-only">(current)</span></a>
+                            <Link className="nav-link" to="/menu">Menu <span className="sr-only">(current)</span></Link>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" href="#drinks">Drinks</a>
