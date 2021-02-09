@@ -68,25 +68,25 @@ const SectionFeatures = () => {
 const SectionDailyFood = () => {
     return(
         <section className="daily-food-str mb-5">
-            <h3 className="title text-center wow fadeInUp"><img src="assets/images/daily_food.png" alt="" /></h3>
+            <h3 className="title text-center wow fadeInUp"><img src="/assets/images/daily_food.png" alt="" /></h3>
             <div className="row">
                 <div className="col-md-4 col-lg-4 position-relative wow slideInLeft" data-wow-delay="0.5s">
-                    <img src="assets/images/icons/ar_lb.png" alt="" className="ar-lb" />
+                    <img src="/assets/images/icons/ar_lb.png" alt="" className="ar-lb" />
                 </div>
                 <div className="col-md-4 col-lg-4 col-sm-12 feature wow fadeInUp" data-wow-delay="0.3s">
-                    <Link to="/breakfast"><img className="type" src="assets/images/breakfast.png" alt="" /></Link>
+                    <Link to="/menu/breakfast"><img className="type" src="/assets/images/breakfast.png" alt="" /></Link>
                     <h4 className="name text-center">Breakfast</h4>
                 </div>
                 <div className="col-md-4 col-lg-4 position-relative wow slideInRight" data-wow-delay="0.5s">
-                    <img src="assets/images/icons/ar_rb.png" alt="" className="ar-rb" />
+                    <img src="/assets/images/icons/ar_rb.png" alt="" className="ar-rb" />
                 </div>
                 <div className="col-md-4 col-lg-4 col-sm-12 feature wow fadeInLeft" data-wow-delay="0.6s">
-                    <Link to="/dinner"><img className="type" src="assets/images/dinner.png" alt="" /></Link>
+                    <Link to="/menu/dinner"><img className="type" src="/assets/images/dinner.png" alt="" /></Link>
                     <h4 className="name text-center">Dinner</h4>
                 </div>
                 <div className="col-md-4 col-lg-4"></div>
                 <div className="col-md-4 col-lg-4 col-sm-12 feature wow fadeInRight" data-wow-delay="0.6s">
-                    <Link to="/supper"><img className="type" src="assets/images/lunch.png" alt="" /></Link>
+                    <Link to="/menu/supper"><img className="type" src="/assets/images/lunch.png" alt="" /></Link>
                     <h4 className="name text-center">Supper</h4>
                 </div>
             </div>

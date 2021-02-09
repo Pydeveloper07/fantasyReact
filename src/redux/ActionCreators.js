@@ -115,3 +115,93 @@ export const fetchDrinks = () => (dispatch) => {
             .then((drinks) => dispatch(addDrinks(drinks)))
             .catch((error) => dispatch(drinksFailed(error.message)));
 }
+
+export const addBreakfast = (foods) => ({
+    type: ActionTypes.ADD_BREAKFAST,
+    payload: foods
+})
+
+export const breakfastFailed = (errMsg) => ({
+    type: ActionTypes.BREAKFAST_FAILED,
+    payload: errMsg
+})
+
+export const fetchBreakfast = () => (dispatch) => {
+    return fetch(baseUrl + '/api/menu/breakfast/')
+            .then((response) => {
+                if (response.ok){
+                    return response;
+                }
+                var err = new Error('Error ' + response.status + ': ' + response.statusText);
+                err.response = response;
+                throw err;
+            },
+            (error) => {
+                throw new Error(error.message);
+            })
+            .then((response) => response.json())
+            .then((foods) => dispatch(addBreakfast(foods)))
+            .catch((error) => dispatch(breakfastFailed(error.message)));
+}
+
+export const addDinner = (foods) => ({
+    type: ActionTypes.ADD_DINNER,
+    payload: foods
+})
+
+export const dinnerFailed = (errMsg) => ({
+    type: ActionTypes.DINNER_FAILED,
+    payload: errMsg
+})
+
+export const fetchDinner = () => (dispatch) => {
+    return fetch(baseUrl + '/api/menu/dinner/')
+            .then((response) => {
+                if (response.ok){
+                    return response;
+                }
+                var err = new Error('Error ' + response.status + ': ' + response.statusText);
+                err.response = response;
+                throw err;
+            },
+            (error) => {
+                throw new Error(error.message);
+            })
+            .then((response) => response.json())
+            .then((foods) => dispatch(addDinner(foods)))
+            .catch((error) => dispatch(dinnerFailed(error.message)));
+}
+
+export const addSupper = (foods) => ({
+    type: ActionTypes.ADD_SUPPER,
+    payload: foods
+})
+
+export const supperFailed = (errMsg) => ({
+    type: ActionTypes.SUPPER_FAILED,
+    payload: errMsg
+})
+
+export const fetchSupper = () => (dispatch) => {
+    return fetch(baseUrl + '/api/menu/supper/')
+            .then((response) => {
+                if (response.ok){
+                    return response;
+                }
+                var err = new Error('Error ' + response.status + ': ' + response.statusText);
+                err.response = response;
+                throw err;
+            },
+            (error) => {
+                throw new Error(error.message);
+            })
+            .then((response) => response.json())
+            .then((foods) => dispatch(addSupper(foods)))
+            .catch((error) => dispatch(supperFailed(error.message)));
+}
+
+export const fetchDailyFoods = () => (dispatch) => {
+    dispatch(fetchBreakfast());
+    dispatch(fetchDinner());
+    dispatch(fetchSupper());
+}

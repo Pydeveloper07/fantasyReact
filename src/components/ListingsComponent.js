@@ -7,23 +7,23 @@ class Listings extends Component{
         var title;
         switch(this.props.type){
             case 'Drinks': 
-                backgroundImg = 'assets/images/drinks-page-bg.jpg';
+                backgroundImg = '/assets/images/drinks-page-bg.jpg';
                 title = "Don't chase anything but drinks and dreams...";
                 break;
             case 'Breakfast': 
-                backgroundImg = 'assets/images/breakfast-bg.jpg';
+                backgroundImg = '/assets/images/breakfast_bg.jpg';
                 title = "A good breakfast is a start of a good day!";
                 break;
             case 'Dinner': 
-                backgroundImg = 'assets/images/dinner-bg.jpg';
+                backgroundImg = '/assets/images/dinner-bg.jpg';
                 title = "Dinner is where the magic happens in the kitchen!";
                 break;
             case 'Supper': 
-                backgroundImg = 'assets/images/supper-bg.jpg';
+                backgroundImg = '/assets/images/supper-bg.jpg';
                 title = "After dinner rest a while, after supper walk a while!";
                 break;
             default: 
-                backgroundImg = 'assets/images/supper-bg.jpg';
+                backgroundImg = '/assets/images/supper-bg.jpg';
                 title = "After dinner rest a while, after supper walk a while!";
         }
         var foodList = null;
@@ -50,7 +50,7 @@ class Listings extends Component{
                     <h4>{title}</h4>
                 </div>
                 <div className="hero-footer-image">
-                    <img src="assets/images/ink_white.png" alt="" />
+                    <img src="/assets/images/ink_white.png" alt="" />
                 </div>
             </section>
             <div className="container">
