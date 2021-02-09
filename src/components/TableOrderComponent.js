@@ -19,12 +19,12 @@ class TableOrder extends Component{
                                 <h5 className="text-center text-primary"><strong>Get your table easily!</strong></h5>
                                 <div className="form-group">
                                     <select className="form-control" name="tableId" aria-describedby="tableHelp" id="tables" disabled>
-                                        <option value='' disabled selected>Choose your table</option>
+                                        <option disabled defaultValue=''>Choose your table</option>
                                     </select>
                                     <small id="tableHelp" className="form-text text-danger font-weight-bold"></small>
                                 </div>
                                 <div className="form-group">
-                                    <label for="numberOfPeople">How many are you?</label>
+                                    <label htmlFor="numberOfPeople">How many are you?</label>
                                     <input type="number" className="form-control" id="numberOfPeople" min="1"
                                     name="num_of_people" required disabled />
                                     <small className="text-danger err-message"></small>
@@ -32,11 +32,11 @@ class TableOrder extends Component{
                                 <div className="form-group">
                                     <div className="row">
                                         <div className="col-6">
-                                            <label for="reserveStartTime">from</label>
+                                            <label htmlFor="reserveStartTime">from</label>
                                             <input type="time" className="form-control" id="reserveStartTime" name="from" required disabled />
                                         </div>
                                         <div className="col-6">
-                                            <label for="reserveEndTime">to</label>
+                                            <label htmlFor="reserveEndTime">to</label>
                                             <input type="time" className="form-control" id="reserveEndTime" name="to" required disabled />
                                         </div>
                                         <small id="reserveTimeMessage"></small>

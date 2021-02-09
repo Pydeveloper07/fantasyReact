@@ -14,7 +14,7 @@ class Signup extends Component{
                             </button>
                         </div>
                         <div className="modal-body">
-                            <form id="signUpForm" enctype="multipart/form-data">
+                            <form id="signUpForm" encType="multipart/form-data">
                                 <h5 className="text-center text-primary"><strong>Register</strong></h5>
                                 <div className="form-group">
                                     <input type="text" className="form-control" name="username" placeholder="Username" required />

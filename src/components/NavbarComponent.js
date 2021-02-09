@@ -17,7 +17,7 @@ function Navbar(){
                             <Link className="nav-link" to="/menu">Menu <span className="sr-only">(current)</span></Link>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#drinks">Drinks</a>
+                            <Link className="nav-link" to="/drinks">Drinks</Link>
                         </li>
                         <li className="nav-item">
                             <a className="nav-link" data-toggle="modal" data-target="#orderTableWindow" id="tableOrderLink">Table Ordering</a>
@@ -26,7 +26,7 @@ function Navbar(){
                             <a className="nav-link" data-toggle="modal" data-target="#contactUsWindow">Contact Us</a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#dashboard">Dashboard</a>
+                            <Link className="nav-link" to='/dashboard'>Dashboard</Link>
                         </li>
                     </ul>
                     <ul className="navbar-nav col-md-3 col-lg-3 p-0 flex-end">

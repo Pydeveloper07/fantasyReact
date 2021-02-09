@@ -1,35 +1,47 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import OwlCarousel from 'react-owl-carousel';
 import Card from './CardComponent';
+import baseUrl from '../redux/baseUrl';
 
 const MenuHeader = () => {
     return(
         <section className="menu-header position-relative">
             <h3 className="title">Our Menu</h3>
             <div className="hero-footer-image">
-                <img src="assets/images/ink white.png" alt="" />
+                <img src="assets/images/ink_white.png" alt="" />
             </div>
         </section>
     );
 }
 
-const RenderCuisine = () => {
+const RenderCuisine = (props) => {
+    const [overlayOpacity, setOverlayOpacity] = useState(0);
+    const handleMouseEnter = (e) => {
+        setOverlayOpacity(1);
+    }
+    const handleMouseLeave = (e) => {
+        setOverlayOpacity(0);
+    }
     return(
-        <div className="cuisine" style={{backgroundImage: 'url(assets/images/food.png)'}}>
-            <div className="overlay text-center">
-                <span>Uzbek</span>
+        <div className="cuisine" style={{backgroundImage: `url(${baseUrl}` + props.cuisine.image + ')'}}>
+            <div className="overlay text-center" style={{opacity: overlayOpacity}} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                <span>{props.cuisine.name}</span>
             </div>
         </div>
     );
 }
 
-const SectionCuisine = () => {
-    var cuisineList = [];
-    for (var i=0; i<4; i++){
-        cuisineList.push(
-            <RenderCuisine key={i} />
+const SectionCuisine = (props) => {
+    if (props.errMsg){
+        return(
+            <h3 className="text-danger">{props.errMsg}</h3>
         );
     }
+    var cuisineList = props.cuisines.map((cuisine) => {
+        return(
+            <RenderCuisine key={cuisine.id} cuisine={cuisine} />
+        );
+    });
     return(
         <section className="section-cuisine fadeInUp mt-5" data-wow-duration="1s" data-wow-delay="300ms">
             <OwlCarousel margin={10} className="owl-theme owl-carousel-cuisine">
@@ -39,21 +51,25 @@ const SectionCuisine = () => {
     );
 }
 
-const RenderFoodTypes = () => {
+const RenderFoodTypes = (props) => {
     return(
-        <div className="item text-center" style={{backgroundImage: 'url(assets/images/food.png)'}}>
-            <a href="#pizza">Pizza</a>
+        <div className="item text-center" style={{backgroundImage: `url(${baseUrl}` + props.type.image + ')'}}>
+            <a href={`#${props.type.name}`}>{props.type.name}</a>
         </div>
     );
 }
 
-const SectionFoodTypes = () => {
-    var foodTypesList = [];
-    for (var i=0; i<3; i++){
-        foodTypesList.push(
-            <RenderFoodTypes key={i} />
+const SectionFoodTypes = (props) => {
+    if (props.errMsg){
+        return(
+            <h1 className="text-danger">{props.errMsg}</h1>
         );
     }
+    const foodTypesList = props.types.map((type) => {
+        return(
+            <RenderFoodTypes key={type.id} type={type}/>
+        );
+    });
     return(
         <section className="food-types mt-3">
             <OwlCarousel margin={20} className="owl-theme owl-carousel-type">
@@ -63,23 +79,27 @@ const SectionFoodTypes = () => {
     );
 }
 
-const SectionFoods = () => {
-    var types = ['Pizza', 'Fastfood', 'Tea'];
-    var foodList = [];
-    for (var i=0; i<3; i++){
-        foodList.push(
-            <div className="col-md-4 col-lg-4 col-sm-6 col-xs-12">
-                <div className="item">
-                    <Card />
-                </div>
-            </div>
+const SectionFoods = (props) => {
+    if (props.errMsg){
+        return(
+            <h1 className="text-danger">{props.errMsg}</h1>
         );
     }
-    var typesListRendered = types.map((type) => {
+    const typesListRendered = props.types.map((type) => {
+        var foods = props.foods.filter((food) => food.type_id === type.id);
+        const foodList = foods.map((food) => {
+            return(
+                <div className="col-md-4 col-lg-4 col-sm-6 col-xs-12" key={food.id}>
+                    <div className="item">
+                        <Card food={food}/>
+                    </div>
+                </div>
+            );
+        });
         return(
             <React.Fragment>
-                <h2 id={type} className="title text-center">{type}</h2>
-                <div class="row">
+                <h2 id={type.name} className="title text-center">{type.name}</h2>
+                <div className="row">
                     {foodList}
                 </div>
             </React.Fragment>
@@ -98,9 +118,9 @@ class Menu extends Component{
             <React.Fragment>
                 <MenuHeader />
                 <div className="container">
-                    <SectionCuisine />
-                    <SectionFoodTypes />
-                    <SectionFoods />
+                    <SectionCuisine cuisines={this.props.cuisines} errMsg={this.props.errMsgCuisines}/>
+                    <SectionFoodTypes types={this.props.types} errMsg={this.props.errMsgTypes}/>
+                    <SectionFoods foods={this.props.foods} errMsg={this.props.errMsgFoods} types={this.props.types}/>
                 </div>
             </React.Fragment>
         );

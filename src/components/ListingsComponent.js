@@ -2,17 +2,10 @@ import React, {Component} from 'react';
 import Card from './CardComponent';
 
 class Listings extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            type: 'Menu'
-        }
-    }
-
     render(){
         var backgroundImg;
         var title;
-        switch(this.state.type){
+        switch(this.props.type){
             case 'Drinks': 
                 backgroundImg = 'assets/images/drinks-page-bg.jpg';
                 title = "Don't chase anything but drinks and dreams...";
@@ -33,6 +26,23 @@ class Listings extends Component{
                 backgroundImg = 'assets/images/supper-bg.jpg';
                 title = "After dinner rest a while, after supper walk a while!";
         }
+        var foodList = null;
+        if (this.props.errMsg){
+            foodList = (
+                <h1 className="text-danger" style={{zIndex: '10'}}>{this.props.errMsg}</h1>
+            );
+        }
+        else{
+            foodList = this.props.foods.map((food) => {
+                return(
+                    <div className="col-md-4 col-lg-4 col-sm-6 col-xs-12" key={food.id}>
+                        <div className="item">
+                            <Card food={food}/>
+                        </div>
+                    </div>
+                );
+            });
+        }
         return(
             <React.Fragment>
             <section className="listings-header position-relative" style={{backgroundImage: `url(${backgroundImg})`}}>
@@ -40,23 +50,13 @@ class Listings extends Component{
                     <h4>{title}</h4>
                 </div>
                 <div className="hero-footer-image">
-                    <img src="assets/images/ink white.png" alt="" />
+                    <img src="assets/images/ink_white.png" alt="" />
                 </div>
             </section>
             <div className="container">
                 <section className="foods">
                     <div className="row">
-                        <div className="col-md-4 col-lg-4 col-sm-6 col-xs-12">
-                            <div className="item">
-                                <Card />
-                            </div>
-                        </div>
-                        <div className="col-md-4 col-lg-4 col-sm-6 col-xs-12">
-                            <div className="item">
-                                <Card />
-                            </div>
-                        </div>
-                        <h1>There is nothing for :(</h1>
+                        {foodList}
                     </div>
                 </section>
             </div>

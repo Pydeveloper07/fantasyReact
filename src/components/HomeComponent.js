@@ -14,7 +14,7 @@ const SectionHero = () => {
         <section className="hero position-relative">
             <h3 className="hero-title">Do you want to eat <strong>a delicious food</strong> in the world?</h3>
             <div className="hero-footer-image">
-                <img src="assets/images/ink white.png" alt="" />
+                <img src="assets/images/ink_white.png" alt="" />
             </div>
         </section>
     );
@@ -96,12 +96,11 @@ const SectionDailyFood = () => {
 
 class SectionDiscountFoods extends Component{
     render(){
-        var discountFoods = [];
-        for (var i=0; i<5; i++){
-            discountFoods.push(
-                <Card key={i} type={'discount'} />
+        const discountFoods = this.props.discountFoods.map((food) => {
+            return(
+                <Card key={food.id} food={food}/>
             );
-        }
+        });
         return(
             <section className="discount-foods">
                 <h1 className="title">Get our foods at <span>&#127775;</span><span className="special">discount</span><span>&#127775;</span></h1>
@@ -195,7 +194,7 @@ class Home extends Component{
                     <SectionOurWork />
                     <SectionFeatures />
                     <SectionDailyFood />
-                    <SectionDiscountFoods />
+                    <SectionDiscountFoods discountFoods={this.props.discountFoods} />
                 </div>
                 <SectionReviews />
                 <LeaveReview />

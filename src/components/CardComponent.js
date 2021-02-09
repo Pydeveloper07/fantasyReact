@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faThumbsUp, faThumbsDown} from '@fortawesome/fontawesome-free-solid';
+import baseUrl from '../redux/baseUrl';
 
 class Card extends Component {
     constructor(props){
@@ -9,41 +10,51 @@ class Card extends Component {
             itemAmount: 1
         };
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.calculateActualPrice = this.calculateActualPrice.bind(this);
     }
     handleInputChange(event){
         this.setState({itemAmount: event.target.value});
     }
+
+    calculateActualPrice(actualPrice, discount){
+        return actualPrice*(1 - discount/100);
+    }
     render(){
-        var resRender = null;
         var discountRender = null;
-        if (this.props.type === 'Menu' || this.props.type === 'Drinks'){
-            resRender = (
-                <div className="res-container text-center" style={{fontSize: '1.5em', overflow: 'hidden'}}>
-                    <p className="float-left"><FontAwesomeIcon icon={faThumbsUp} className="like" style={{color:'blue'}}></FontAwesomeIcon><span><small>75</small></span></p>
-                    <p className="float-right"><span><small>10</small></span><FontAwesomeIcon icon={faThumbsDown} className="dislike" style={{color:'blue'}}></FontAwesomeIcon></p>
+        var priceRender = null; 
+        if (this.props.food.discount){
+            discountRender = (
+                <h3 className="discount">-{this.props.food.discount}%</h3>
+            );
+            priceRender = (
+                <div className="col-md-6">
+                    <p className="price mb-0" style={{textDecoration: 'line-through'}}>{this.props.food.price}</p>
+                    <p className="price actual_price">{this.calculateActualPrice(this.props.food.price, this.props.food.discount)}</p>
                 </div>
             );
         }
-        else if (this.props.type === 'discount'){
-            discountRender = (
-                <h3 className="discount">-25%</h3>
+        else{
+            priceRender = (
+                <div className="col-md-6">
+                    <p className="price mb-0">{this.props.food.price}</p>
+                </div>
             );
         }
         return(
             <div className="card item">
                 <div className="image-container">
-                    <img className="card-img-top" src="assets/images/lunch.png" alt=""/>
+                    <img className="card-img-top" src={baseUrl + this.props.food.image} alt=""/>
                 </div>
                 <div className="card-body">
-                    {resRender}
+                    <div className="res-container text-center" style={{fontSize: '1.5em', overflow: 'hidden'}}>
+                        <p className="float-left"><FontAwesomeIcon icon={faThumbsUp} className="like" style={{color:'blue'}}></FontAwesomeIcon><span><small>75</small></span></p>
+                        <p className="float-right"><span><small>10</small></span><FontAwesomeIcon icon={faThumbsDown} className="dislike" style={{color:'blue'}}></FontAwesomeIcon></p>
+                    </div>
                     {discountRender}
-                    <h4 className="card-title text-left food-name">Pizza</h4>
-                    <p className="content">A very delicious pizza</p>
+                    <h4 className="card-title text-left food-name">{this.props.food.name}</h4>
+                    <p className="content">{this.props.food.description}</p>
                     <div className="row bottom-row">
-                        <div className="col-md-6">
-                            <p className="price mb-0" style={{textDecoration: 'line-through'}}>25,000</p>
-                            <p className="price actual_price">35,000</p>
-                        </div>
+                        {priceRender}
                         <p className="col-md-6 text-right">
                             <input type="number" name="quantity" onChange={this.state.handleInputChange} defaultValue={1} min='1' className="quantity" />
                         </p>
