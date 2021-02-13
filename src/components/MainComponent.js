@@ -14,7 +14,9 @@ import Drinks from './DrinksComponent';
 import Breakfast from './BreakfastComponent';
 import Dinner from './DinnerComponent';
 import Supper from './SupperComponent';
-import {fetchCuisines, fetchTypes, fetchFoods, fetchDrinks, fetchDailyFoods} from '../redux/ActionCreators';
+import {
+    fetchCuisines, fetchTypes, fetchFoods, fetchDrinks, 
+    fetchDailyFoods, fetchReviews, authenticate, logout} from '../redux/ActionCreators';
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -22,7 +24,10 @@ const mapDispatchToProps = (dispatch) => {
         fetchTypes: () => dispatch(fetchTypes()),
         fetchFoods: () => dispatch(fetchFoods()),
         fetchDrinks: () => dispatch(fetchDrinks()),
-        fetchDailyFoods: () => dispatch(fetchDailyFoods())
+        fetchDailyFoods: () => dispatch(fetchDailyFoods()),
+        fetchReviews: () => dispatch(fetchReviews()),
+        authenticate: (username, password) => dispatch(authenticate(username, password)),
+        logout: () => dispatch(logout())
     };
 }
 
@@ -34,7 +39,9 @@ const mapStateToProps = (store) => {
         drinks: store.drinks,
         breakfast: store.breakfast,
         dinner: store.dinner,
-        supper: store.supper
+        supper: store.supper,
+        reviews: store.reviews,
+        login: store.login
     };
 }
 
@@ -45,15 +52,15 @@ class Main extends Component {
         this.props.fetchFoods();
         this.props.fetchDrinks();
         this.props.fetchDailyFoods();
+        this.props.fetchReviews();
     }
     render(){
         return(
             <React.Fragment>
-                <Navbar />
+                <Navbar logout={this.props.logout} isLoggedIn={this.props.login.isLoggedIn} />
                 <Switch>
                     <Route path='/home' component={() => <Home discountFoods={this.props.foods.foods.filter((food) => food.discount)} 
-                                                            dinner={this.props.dinner.foods} dinnerErrMsg={this.props.dinner.errMsg}
-                                                            supper={this.props.supper.foods} supperErrMsg={this.props.supper.errMsg}/>} />
+                                                            reviews={this.props.reviews.reviews} isLoading={this.props.reviews.isLoading} errMsg={this.props.reviews.errMsg}/>} />
                     <Route exact path='/menu' component={() => <Menu cuisines={this.props.cuisines.cuisines} errMsgCuisines={this.props.cuisines.errMsg}
                                                                 types={this.props.types.types} errMsgTypes={this.props.types.errMsg}
                                                                 foods={this.props.foods.foods} errMsgFoods={this.props.foods.errMsg}/>}/>
@@ -64,7 +71,7 @@ class Main extends Component {
                     <Route path='/dashboard' component={Dashboard} /> 
                     <Redirect to='/home' />
                 </Switch>
-                <Login />
+                <Login authenticate={this.props.authenticate} />
                 <Signup />
                 <ContactUs />
                 <TableOrder />

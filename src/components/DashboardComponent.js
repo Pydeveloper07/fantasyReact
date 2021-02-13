@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUserCircle, faPhone, faMapMarker, faWallet} from '@fortawesome/fontawesome-free-solid';
 import { faMailBulk, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import EditProfile from './EditProfileComponent';
 
 const DashboardHeader = () => {
     return(
@@ -172,6 +173,7 @@ class Dashboard extends Component{
                     <SectionStatistics />
                     <SectionHistory />
                 </div>
+                <EditProfile />
             </React.Fragment>
         );
     }

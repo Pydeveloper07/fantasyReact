@@ -17,7 +17,6 @@ export const fetchCuisines = () => (dispatch) => {
             if (response.ok){
                 return response;
             }
-            alert(response.status);
             var err = new Error('Error ' + response.status + ': ' + response.statusText);
             err.response = response;
             throw err;
@@ -204,4 +203,85 @@ export const fetchDailyFoods = () => (dispatch) => {
     dispatch(fetchBreakfast());
     dispatch(fetchDinner());
     dispatch(fetchSupper());
+}
+
+export const addReviews = (reviews) => ({
+    type: ActionTypes.ADD_REVIEWS,
+    payload: reviews
+})
+
+export const reviewsFailed = (errMsg) => ({
+    type: ActionTypes.REVIEWS_FAILED,
+    payload: errMsg
+})
+
+export const reviewsLoading = () => ({
+    type: ActionTypes.REVIEWS_LOADING,
+})
+
+export const fetchReviews = () => (dispatch) => {
+    dispatch(reviewsLoading());
+    return fetch(baseUrl + '/api/pages/reviews')
+            .then((response) => {
+                if (response.ok){
+                    return response;
+                }
+                var err = new Error('Error ' + response.status + ': ' + response.statusText);
+                err.response = response;
+                throw err;
+            },
+            (error) => {
+                throw new Error(error.message);
+            })
+            .then((response) => response.json())
+            .then((reviews) => dispatch(addReviews(reviews)))
+            .catch((error) => dispatch(reviewsFailed(error.message)));
+}
+
+export const authSuccess = () => ({
+    type: ActionTypes.LOGIN_SUCCESS
+})
+
+export const authFailure = (errMsg) => ({
+    type: ActionTypes.LOGIN_FAILURE,
+    payload: errMsg
+})
+
+export const authenticate = (username, password) => (dispatch) => {
+    return fetch(baseUrl + '/api/accounts/token-auth/', {
+            method: 'POST',
+            body: JSON.stringify({username: username, password: password}),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+        .then((response) => {
+            if (response.ok){
+                return response;
+            }
+            else{
+                var err = new Error('Error ' + response.status + ': ' + response.statusText);
+                err.response = response;
+                throw err;
+            }
+        },
+        (error) => {
+            throw new Error(error.message);
+        })
+        .then((response) => (response.json()))
+        .then((response) => {
+            localStorage.setItem('token', response.token);
+            dispatch(authSuccess());
+        })
+        .catch((error) => dispatch(authFailure(error.message)));
+}
+
+export const logoutSuccess = () => ({
+    type: ActionTypes.LOGOUT_SUCCESS
+})
+
+export const logout = () => (dispatch) => {
+    localStorage.removeItem('token');
+    dispatch(logoutSuccess());
 }

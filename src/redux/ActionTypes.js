@@ -18,3 +18,12 @@ export const DINNER_FAILED = 'DINNER_FAILED';
 
 export const ADD_SUPPER = 'ADD_SUPPER';
 export const SUPPER_FAILED = 'SUPPER_FAILED';
+
+export const ADD_REVIEWS = 'ADD_REVIEWS';
+export const REVIEWS_FAILED = 'REVIEWS_FAILED';
+export const REVIEWS_LOADING = 'REVIEWS_LOADING';
+
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';

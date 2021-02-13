@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+import React, {useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faShoppingCart, faBars} from '@fortawesome/fontawesome-free-solid';
 import {Link} from 'react-router-dom';
 
-function Navbar(){
+function Navbar(props){
     return(
         <nav className="navbar navbar-expand-lg custom-nav row wow fadeInDown">
             <div className="container">
@@ -25,17 +25,25 @@ function Navbar(){
                         <li className="nav-item">
                             <a className="nav-link" data-toggle="modal" data-target="#contactUsWindow">Contact Us</a>
                         </li>
+                        {props.isLoggedIn && 
                         <li className="nav-item">
                             <Link className="nav-link" to='/dashboard'>Dashboard</Link>
                         </li>
+                        }
+                        
                     </ul>
                     <ul className="navbar-nav col-md-3 col-lg-3 p-0 flex-end">
-                        <li className="nav-item">
-                            <a className="nav-link" id="login" data-toggle="modal" data-target="#loginWindow">Log in</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" id="sign-up" data-toggle="modal" data-target="#registrationWindow">Sign Up</a>
-                        </li>
+                        {!props.isLoggedIn &&
+                        <React.Fragment>
+                            <li className="nav-item">
+                                <a className="nav-link" id="login" data-toggle="modal" data-target="#loginWindow">Log in</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" id="sign-up" data-toggle="modal" data-target="#registrationWindow">Sign Up</a>
+                            </li>
+                        </React.Fragment>
+                        }
+                        {props.isLoggedIn &&
                         <li className="nav-item active">
                             <div className="dropdown">
                                 <button type="button" className="btn btn-info dropdown-toggle" data-toggle="dropdown"
@@ -86,9 +94,12 @@ function Navbar(){
                                 </div>
                             </div>
                         </li>
+                        }
+                        {props.isLoggedIn &&
                         <li className="nav-item">
-                            <a className="nav-link" href="#logout" id="logout">Logout</a>
+                            <a className="nav-link" id="logout" onClick={() => props.logout()}>Logout</a>
                         </li>
+                        }
                     </ul>
                 </div>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"

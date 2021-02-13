@@ -14,31 +14,31 @@ class EditProfile extends Component{
                             </button>
                         </div>
                         <div className="modal-body">
-                            <form enctype="multipart/form-data" id="editProfileForm">
-                                <h5 className="text-center text-primary"><strong>Edit your info</strong></h5>
-                                <div className="form-group">
+                            <form class="row" encType="multipart/form-data" id="editProfileForm">
+                                <h5 className="text-center text-primary col-12"><strong>Edit your info</strong></h5>
+                                <div className="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <label for="username">Username:</label>
                                     <input type="text" className="form-control" name="username" value="Black@Tiger" placeholder="Username" required />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <label for="first_name">First Name:</label>
                                     <input type="text" className="form-control" name="first_name" value="Tukhtamurod" placeholder="First Name" required />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <label for="last_name">Last Name:</label>
                                     <input type="text" className="form-control" name="last_name" value="Isroilov" placeholder="Last Name" required />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <label for="address">Address:</label>
                                     <input type="address" className="form-control" placeholder="Address" name="address"
                                         value="Toshkent shahri" required />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <label for="phone_number">Phone Number:</label>
                                     <input type="text" className="form-control" placeholder="Phone Number" name="phone_number"
                                         value="+998997779988" required />
                                 </div>
-                                <div className="form-group">
+                                <div className="form-group col-lg-6 col-md-6 col-sm-6 col-xs-12">
                                     <label for="email">Email:</label>
                                     <input type="email" className="form-control" placeholder="Email" name="email" value="example@gmail.com" />
                                 </div>

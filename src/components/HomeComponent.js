@@ -8,6 +8,7 @@ import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import LeaveReview from './LeaveReviewComponent';
 import Card from './CardComponent';
+import baseUrl from '../redux/baseUrl';
 
 const SectionHero = () => {
     return(
@@ -96,6 +97,11 @@ const SectionDailyFood = () => {
 
 class SectionDiscountFoods extends Component{
     render(){
+        if (!this.props.discountFoods){
+            return(
+                <div></div>
+            );
+        }
         const discountFoods = this.props.discountFoods.map((food) => {
             return(
                 <Card key={food.id} food={food}/>
@@ -114,50 +120,72 @@ class SectionDiscountFoods extends Component{
 
 const RenderReview = (props) => {
     var className = 'carousel-item';
-    if (props.item === 1){
+    if (props.active){
         className = 'carousel-item active';
+    }
+    var fullName = null;
+    if (props.review.user.first_name && props.review.user.last_name){
+        fullName = props.review.user.first_name + " " + props.review.user.last_name;
+    }
+    var rating = [];
+    for (var i=0; i<5; i++){
+        if(i<props.review.rate){
+            rating.push(
+                <FontAwesomeIcon key={i} icon={faStar} className="star checked"></FontAwesomeIcon>
+            );
+        }
+        else{
+            rating.push(
+                <FontAwesomeIcon key={i} icon={faStar} className="fas star"></FontAwesomeIcon>
+            );
+        }
     }
     return(
         <div className={className}>
             <div className="review-block">
                 <div className="ava">
-                    <img src="assets/images/client1.jpg" alt="Image Not Found" />
-                    {/* <img src="{% static 'img/user.png' %}" alt="Image Not Found"> */}
+                    <img style={{width: '200px', height: '200px'}} src={baseUrl + props.review.user.avatar.avatar} alt="Image Not Found" />
                 </div>
-                <h3 className="name text-center">Tukhtamurod Isroilov</h3>
-                <h3 className="name text-center">Black@Tiger</h3>
+                <h3 className="name text-center">{fullName}</h3>
+                <h3 className="name text-center">{props.review.user.username}</h3>
                 <div className="rating-block text-center">
                     <span>Rating:</span>
-                    <FontAwesomeIcon icon={faStar} className="star checked"></FontAwesomeIcon>
-                    <FontAwesomeIcon icon={faStar} className="fas star checked"></FontAwesomeIcon>
-                    <FontAwesomeIcon icon={faStar} className="fas star checked"></FontAwesomeIcon>
-                    <FontAwesomeIcon icon={faStar} className="fas star checked"></FontAwesomeIcon>
-                    <FontAwesomeIcon icon={faStar} className="fas star"></FontAwesomeIcon>
+                    {rating}
                 </div>
-                <p className="text-center"><small className="font-italic">Date: 19/05/2020</small></p>
-                <p className="text-center review-content"><q>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer commodo 
-                    eget orci egestas varius. Nunc ac magna sit amet erat rhoncus tincidunt sed non justo. Donec tincidunt imperdiet porttitor.</q></p>
+                <p className="text-center"><small className="font-italic">Date: {props.review.created_date}</small></p>
+                <p className="text-center review-content"><q>{props.review.content}</q></p>
             </div>
         </div>
     );
 }
 
-const SectionReviews = () => {
-    const arr = [1, 2, 3];
-    const reviewList = arr.map((value) => {
+const SectionReviews = (props) => {
+    if (props.errMsg || props.isLoading){
         return(
-            <RenderReview key={value} item={value} />
+            <div></div>
         );
-    });
-    const indicatorList = arr.map((value) => {
+    }
+    var reviewList = [];
+    reviewList.push(
+        <RenderReview key={props.reviews[0].id} review={props.reviews[0]} active={true}/>
+    );
+    reviewList.push(props.reviews.map((review) => {
+        if(review !== props.reviews[0]){
+            return(
+                <RenderReview key={review.id} review={review} active={false}/>
+            );
+        }
+    }));
+    var indicatorList = [];
+    for (var i=0; i<props.reviews.length; i++){
         var className = '';
-        if (value+1 === 1){
+        if (i === 0){
             className = "active";
         }
-        return(
-            <li data-target="#carouselExampleIndicators" key={value} data-slide-to={value+1} className={className}></li>
+        indicatorList.push(
+            <li data-target="#carouselExampleIndicators" key={i} data-slide-to={i+1} className={className}></li>
         );
-    });
+    }
     return(
         <section className="reviews mt-5">
             <h3 className="title text-center text-white">
@@ -196,7 +224,7 @@ class Home extends Component{
                     <SectionDailyFood />
                     <SectionDiscountFoods discountFoods={this.props.discountFoods} />
                 </div>
-                <SectionReviews />
+                <SectionReviews reviews={this.props.reviews} isLoading={this.props.isLoading} errMsg={this.props.errMsg}/>
                 <LeaveReview />
             </React.Fragment>
         );

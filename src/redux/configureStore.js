@@ -8,6 +8,8 @@ import Drinks from './drinks';
 import Breakfast from './breakfast';
 import Dinner from './dinner';
 import Supper from './supper';
+import Reviews from './reviews';
+import Login from './login';
 
 export const configureStore = () => {
     const store = createStore(combineReducers({
@@ -17,7 +19,9 @@ export const configureStore = () => {
         drinks: Drinks,
         breakfast: Breakfast,
         dinner: Dinner,
-        supper: Supper
+        supper: Supper,
+        reviews: Reviews,
+        login: Login
     }), applyMiddleware(thunk, logger));
     return store;
 }
