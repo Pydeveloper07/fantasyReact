@@ -86,7 +86,7 @@ const SectionFoods = (props) => {
         );
     }
     const typesListRendered = props.types.map((type) => {
-        var foods = props.foods.filter((food) => food.type_id === type.id);
+        var foods = props.foods.filter((food) => food.type === type.id);
         const foodList = foods.map((food) => {
             return(
                 <div className="col-md-4 col-lg-4 col-sm-6 col-xs-12" key={food.id}>

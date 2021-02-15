@@ -221,7 +221,7 @@ export const reviewsLoading = () => ({
 
 export const fetchReviews = () => (dispatch) => {
     dispatch(reviewsLoading());
-    return fetch(baseUrl + '/api/pages/reviews')
+    return fetch(baseUrl + '/api/pages/reviews/')
             .then((response) => {
                 if (response.ok){
                     return response;
@@ -274,7 +274,7 @@ export const authenticate = (username, password) => (dispatch) => {
             localStorage.setItem('token', response.token);
             dispatch(authSuccess());
         })
-        .catch((error) => dispatch(authFailure(error.message)));
+        .catch((error) => dispatch(authFailure("Incorrect login credentials!")));
 }
 
 export const logoutSuccess = () => ({

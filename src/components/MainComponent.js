@@ -57,7 +57,8 @@ class Main extends Component {
     render(){
         return(
             <React.Fragment>
-                <Navbar logout={this.props.logout} isLoggedIn={this.props.login.isLoggedIn} />
+                <Navbar logout={this.props.logout} isLoggedIn={this.props.login.isLoggedIn} 
+                        auth={this.props.authenticate} login={this.props.login} />
                 <Switch>
                     <Route path='/home' component={() => <Home discountFoods={this.props.foods.foods.filter((food) => food.discount)} 
                                                             reviews={this.props.reviews.reviews} isLoading={this.props.reviews.isLoading} errMsg={this.props.reviews.errMsg}/>} />
@@ -71,8 +72,6 @@ class Main extends Component {
                     <Route path='/dashboard' component={Dashboard} /> 
                     <Redirect to='/home' />
                 </Switch>
-                <Login authenticate={this.props.authenticate} />
-                <Signup />
                 <ContactUs />
                 <TableOrder />
                 <Footer />

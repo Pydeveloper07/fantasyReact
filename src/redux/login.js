@@ -1,7 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 
 const Login = (state = {
-        isLoggedIn: false,
+        isLoggedIn: localStorage.getItem('token')?true:false,
         errMsg: null
     }, action) => {
     switch(action.type){

@@ -144,7 +144,7 @@ const RenderReview = (props) => {
         <div className={className}>
             <div className="review-block">
                 <div className="ava">
-                    <img style={{width: '200px', height: '200px'}} src={baseUrl + props.review.user.avatar.avatar} alt="Image Not Found" />
+                    <img style={{width: '200px', height: '200px'}} src={baseUrl + props.review.user.avatar} alt="Image Not Found" />
                 </div>
                 <h3 className="name text-center">{fullName}</h3>
                 <h3 className="name text-center">{props.review.user.username}</h3>
