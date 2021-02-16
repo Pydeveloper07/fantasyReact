@@ -4,8 +4,6 @@ import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Home from './HomeComponent';
 import Footer from './FooterComponent';
-import Login from './LoginComponent';
-import Signup from './SignupComponent';
 import ContactUs from './ContactUsComponent';
 import TableOrder from './TableOrderComponent';
 import Menu from './MenuComponent';
@@ -17,6 +15,7 @@ import Supper from './SupperComponent';
 import {
     fetchCuisines, fetchTypes, fetchFoods, fetchDrinks, 
     fetchDailyFoods, fetchReviews, authenticate, logout} from '../redux/ActionCreators';
+import {actions} from 'react-redux-form';
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -27,7 +26,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchDailyFoods: () => dispatch(fetchDailyFoods()),
         fetchReviews: () => dispatch(fetchReviews()),
         authenticate: (username, password) => dispatch(authenticate(username, password)),
-        logout: () => dispatch(logout())
+        logout: () => dispatch(logout()),
+        resetSignupForm: () => dispatch(actions.reset('signup'))
     };
 }
 
@@ -58,7 +58,8 @@ class Main extends Component {
         return(
             <React.Fragment>
                 <Navbar logout={this.props.logout} isLoggedIn={this.props.login.isLoggedIn} 
-                        auth={this.props.authenticate} login={this.props.login} />
+                        auth={this.props.authenticate} login={this.props.login} 
+                        resetSignupForm={this.props.resetSignupForm} />
                 <Switch>
                     <Route path='/home' component={() => <Home discountFoods={this.props.foods.foods.filter((food) => food.discount)} 
                                                             reviews={this.props.reviews.reviews} isLoading={this.props.reviews.isLoading} errMsg={this.props.reviews.errMsg}/>} />

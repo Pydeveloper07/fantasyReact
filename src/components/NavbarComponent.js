@@ -56,7 +56,7 @@ class Navbar extends Component{
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" id="sign-up" onClick={this.toggleSignup}>Sign Up</a>
-                                    <Signup isOpen={this.state.isSignupModelOpen} toggle={this.toggleSignup} />
+                                    <Signup isOpen={this.state.isSignupModelOpen} toggle={this.toggleSignup} resetForm={this.props.resetSignupForm} />
                                 </li>
                             </React.Fragment>
                             }
