@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable react/jsx-pascal-case */
 import React, {Component} from 'react';
 import {Modal, ModalBody, ModalHeader, Row, Col} from 'reactstrap';
@@ -26,6 +27,18 @@ class Signup extends Component{
         if (!this.check_password(values.password, values.conf_password)){
             return;
         }
+        var data = new FormData();
+        data.append('avatar', values.avatar[0]);
+        alert(data);
+        this.props.registerNewUser(
+            values.username, 
+            values.first_name, 
+            values.last_name,
+            values.email, 
+            values.address, 
+            values.phone_number, 
+            values.password, 
+            values.avatar[0]);
         this.props.resetForm();
     }
 

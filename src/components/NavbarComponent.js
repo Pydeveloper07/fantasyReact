@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faShoppingCart, faBars} from '@fortawesome/fontawesome-free-solid';
 import {Link} from 'react-router-dom';
@@ -56,7 +56,8 @@ class Navbar extends Component{
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" id="sign-up" onClick={this.toggleSignup}>Sign Up</a>
-                                    <Signup isOpen={this.state.isSignupModelOpen} toggle={this.toggleSignup} resetForm={this.props.resetSignupForm} />
+                                    <Signup isOpen={this.state.isSignupModelOpen} toggle={this.toggleSignup} 
+                                            resetForm={this.props.resetSignupForm} registerNewUser={this.props.registerNewUser}/>
                                 </li>
                             </React.Fragment>
                             }

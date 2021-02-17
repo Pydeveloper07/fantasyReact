@@ -238,8 +238,9 @@ export const fetchReviews = () => (dispatch) => {
             .catch((error) => dispatch(reviewsFailed(error.message)));
 }
 
-export const authSuccess = () => ({
-    type: ActionTypes.LOGIN_SUCCESS
+export const authSuccess = (user) => ({
+    type: ActionTypes.LOGIN_SUCCESS,
+    payload: user
 })
 
 export const authFailure = (errMsg) => ({
@@ -285,3 +286,61 @@ export const logout = () => (dispatch) => {
     localStorage.removeItem('token');
     dispatch(logoutSuccess());
 }
+
+export const registerUserSuccess = (user) => ({
+    type: ActionTypes.REGISTER_USER_SUCCESS,
+    payload: user
+})
+
+export const registerUserFailure = (errMsg) => ({
+    type: ActionTypes.REGISTER_USER_FAILURE,
+    payload: errMsg
+})
+
+export const registerNewUser = (
+    username, 
+    first_name,
+    last_name,
+    email,
+    address,
+    phone_number,
+    password,
+    avatar
+    ) => (dispatch) => {
+        var newUser = {
+            username: username,
+            first_name: first_name,
+            last_name: last_name,
+            email: email,
+            address: address,
+            phone_number: phone_number,
+            password: password,
+            avatar: avatar
+        };
+        return fetch(baseUrl + '/api/accounts/users/', {
+            method: "POST",
+            body: JSON.stringify(newUser),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            if (response.ok){
+                return response;
+            }
+            var err = new Error("Error " + response.status + ": " + response.statusText);
+            err.response = response;
+            throw err;
+        },
+        (error) => {
+            throw new Error(error.message);
+        })
+        .then((response) => response.json())
+        .then((response) => {
+            dispatch(registerUserSuccess(response.user));
+            localStorage.setItem('token', response.token);
+            dispatch(authSuccess(response.user));
+        })
+        .catch((error) => dispatch(registerUserFailure(error.message)))
+    }
+
