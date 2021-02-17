@@ -29,9 +29,7 @@ const mapDispatchToProps = (dispatch) => {
         authenticate: (username, password) => dispatch(authenticate(username, password)),
         logout: () => dispatch(logout()),
         resetSignupForm: () => dispatch(actions.reset('signup')),
-        registerNewUser: (username, first_name, last_name, email, address, phone_number, password, avatar) => dispatch(registerNewUser(
-                            username, first_name, last_name, email, address, phone_number, password, avatar
-                        ))
+        registerNewUser: (formData) => dispatch(registerNewUser(formData))
     };
 }
 

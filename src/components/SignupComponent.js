@@ -27,18 +27,16 @@ class Signup extends Component{
         if (!this.check_password(values.password, values.conf_password)){
             return;
         }
-        var data = new FormData();
-        data.append('avatar', values.avatar[0]);
-        alert(data);
-        this.props.registerNewUser(
-            values.username, 
-            values.first_name, 
-            values.last_name,
-            values.email, 
-            values.address, 
-            values.phone_number, 
-            values.password, 
-            values.avatar[0]);
+        let formData = new FormData();
+        formData.append('avatar', values.avatar[0], values.avatar[0].name);
+        formData.append('username', values.username);
+        formData.append('first_name', values.first_name);
+        formData.append('last_name', values.last_name);
+        formData.append('email', values.email);
+        formData.append('address', values.address);
+        formData.append('phone_number', values.phone_number);
+        formData.append('password', values.password);
+        this.props.registerNewUser(formData);
         this.props.resetForm();
     }
 

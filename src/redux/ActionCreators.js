@@ -1,5 +1,6 @@
 import * as ActionTypes from './ActionTypes';
 import baseUrl from './baseUrl';
+import axios from 'axios';
 
 export const addCuisines = (cuisines) => ({
     type: ActionTypes.ADD_CUISINES,
@@ -12,22 +13,10 @@ export const cuisinesFailed = (errMsg) => ({
 })
 
 export const fetchCuisines = () => (dispatch) => {
-    return fetch(baseUrl + '/api/menu/cuisines/')
-        .then((response) => {
-            if (response.ok){
-                return response;
-            }
-            var err = new Error('Error ' + response.status + ': ' + response.statusText);
-            err.response = response;
-            throw err;
-        }, 
-        (error) => {
-            var err = new Error(error.message);
-            throw err;
-        })
-        .then((response) => response.json())
-        .then((cuisines) => dispatch(addCuisines(cuisines)))
-        .catch((error) => dispatch(cuisinesFailed(error.message)));
+    return axios.get(baseUrl + '/api/menu/cuisines/')
+                .then((response) => response.data)
+                .then((cuisines) => dispatch(addCuisines(cuisines)))
+                .catch((error) => dispatch(cuisinesFailed(error.message)));
 }
 
 export const addTypes = (types) => ({
@@ -41,22 +30,10 @@ export const typesFailed = (errMsg) => ({
 })
 
 export const fetchTypes = () => (dispatch) => {
-    return fetch(baseUrl + '/api/menu/types/')
-        .then((response) => {
-            if (response.ok){
-                return response;
-            }
-            var err = new Error('Error ' + response.status + ': ' + response.statusText);
-            err.response = response;
-            throw err;
-        },
-        (error) => {
-            var err = new Error(error.message);
-            throw err;
-        })
-        .then((response) => response.json())
-        .then((types) => dispatch(addTypes(types)))
-        .catch((error) => dispatch(typesFailed(error.message)));
+    return axios.get(baseUrl + '/api/menu/types/')
+                .then((response) => response.data)
+                .then((types) => dispatch(addTypes(types)))
+                .catch((error) => dispatch(typesFailed(error.message)));
 }
 
 export const addFoods = (foods) => ({
@@ -70,21 +47,10 @@ export const foodsFailed = (errMsg) => ({
 })
 
 export const fetchFoods = () => (dispatch) => {
-    return fetch(baseUrl + '/api/menu/foods')
-            .then((response) => {
-                if(response.ok){
-                    return response;
-                }
-                var err = new Error('Error ' + response.status + ': ' + response.statusText);
-                err.response = response;
-                throw err;
-            },
-            (error) => {
-                throw new Error(error.message);
-            })
-            .then((response) => response.json())
-            .then((foods) => dispatch(addFoods(foods)))
-            .catch((error) => dispatch(foodsFailed(error.message)))
+    return axios.get(baseUrl + '/api/menu/foods')
+                .then((response) => response.data)
+                .then((foods) => dispatch(addFoods(foods)))
+                .catch((error) => dispatch(foodsFailed(error.message)))
 }
 
 export const addDrinks = (drinks) => ({
@@ -98,21 +64,10 @@ export const drinksFailed = (errMsg) => ({
 })
 
 export const fetchDrinks = () => (dispatch) => {
-    return fetch(baseUrl + '/api/menu/drinks/')
-            .then((response) => {
-                if (response.ok){
-                    return response;
-                }
-                var err = new Error('Error ' + response.status + ': ' + response.statusText);
-                err.response = response;
-                throw err;
-            },
-            (error) => {
-                throw new Error(error.message);
-            })
-            .then((response) => response.json())
-            .then((drinks) => dispatch(addDrinks(drinks)))
-            .catch((error) => dispatch(drinksFailed(error.message)));
+    return axios.get(baseUrl + '/api/menu/drinks/')
+                .then((response) => response.data)
+                .then((drinks) => dispatch(addDrinks(drinks)))
+                .catch((error) => dispatch(drinksFailed(error.message)));
 }
 
 export const addBreakfast = (foods) => ({
@@ -126,21 +81,10 @@ export const breakfastFailed = (errMsg) => ({
 })
 
 export const fetchBreakfast = () => (dispatch) => {
-    return fetch(baseUrl + '/api/menu/breakfast/')
-            .then((response) => {
-                if (response.ok){
-                    return response;
-                }
-                var err = new Error('Error ' + response.status + ': ' + response.statusText);
-                err.response = response;
-                throw err;
-            },
-            (error) => {
-                throw new Error(error.message);
-            })
-            .then((response) => response.json())
-            .then((foods) => dispatch(addBreakfast(foods)))
-            .catch((error) => dispatch(breakfastFailed(error.message)));
+    return axios.get(baseUrl + '/api/menu/breakfast/')
+                .then((response) => response.data)
+                .then((foods) => dispatch(addBreakfast(foods)))
+                .catch((error) => dispatch(breakfastFailed(error.message)));
 }
 
 export const addDinner = (foods) => ({
@@ -154,21 +98,10 @@ export const dinnerFailed = (errMsg) => ({
 })
 
 export const fetchDinner = () => (dispatch) => {
-    return fetch(baseUrl + '/api/menu/dinner/')
-            .then((response) => {
-                if (response.ok){
-                    return response;
-                }
-                var err = new Error('Error ' + response.status + ': ' + response.statusText);
-                err.response = response;
-                throw err;
-            },
-            (error) => {
-                throw new Error(error.message);
-            })
-            .then((response) => response.json())
-            .then((foods) => dispatch(addDinner(foods)))
-            .catch((error) => dispatch(dinnerFailed(error.message)));
+    return axios.get(baseUrl + '/api/menu/dinner/')
+                .then((response) => response.data)
+                .then((foods) => dispatch(addDinner(foods)))
+                .catch((error) => dispatch(dinnerFailed(error.message)));
 }
 
 export const addSupper = (foods) => ({
@@ -182,21 +115,10 @@ export const supperFailed = (errMsg) => ({
 })
 
 export const fetchSupper = () => (dispatch) => {
-    return fetch(baseUrl + '/api/menu/supper/')
-            .then((response) => {
-                if (response.ok){
-                    return response;
-                }
-                var err = new Error('Error ' + response.status + ': ' + response.statusText);
-                err.response = response;
-                throw err;
-            },
-            (error) => {
-                throw new Error(error.message);
-            })
-            .then((response) => response.json())
-            .then((foods) => dispatch(addSupper(foods)))
-            .catch((error) => dispatch(supperFailed(error.message)));
+    return axios.get(baseUrl + '/api/menu/supper/')
+                .then((response) => response.data)
+                .then((foods) => dispatch(addSupper(foods)))
+                .catch((error) => dispatch(supperFailed(error.message)));
 }
 
 export const fetchDailyFoods = () => (dispatch) => {
@@ -221,21 +143,10 @@ export const reviewsLoading = () => ({
 
 export const fetchReviews = () => (dispatch) => {
     dispatch(reviewsLoading());
-    return fetch(baseUrl + '/api/pages/reviews/')
-            .then((response) => {
-                if (response.ok){
-                    return response;
-                }
-                var err = new Error('Error ' + response.status + ': ' + response.statusText);
-                err.response = response;
-                throw err;
-            },
-            (error) => {
-                throw new Error(error.message);
-            })
-            .then((response) => response.json())
-            .then((reviews) => dispatch(addReviews(reviews)))
-            .catch((error) => dispatch(reviewsFailed(error.message)));
+    return axios.get(baseUrl + '/api/pages/reviews/')
+                .then((response) => response.data)
+                .then((reviews) => dispatch(addReviews(reviews)))
+                .catch((error) => dispatch(reviewsFailed(error.message)));
 }
 
 export const authSuccess = (user) => ({
@@ -249,30 +160,18 @@ export const authFailure = (errMsg) => ({
 })
 
 export const authenticate = (username, password) => (dispatch) => {
-    return fetch(baseUrl + '/api/accounts/token-auth/', {
-            method: 'POST',
-            body: JSON.stringify({username: username, password: password}),
+    let data = {
+        username: username,
+        password: password
+    }
+    return axios.post(baseUrl + '/api/accounts/token-auth/', data, {
             headers: {
                 'Content-Type': 'application/json'
-            },
-            credentials: 'same-origin'
-        })
-        .then((response) => {
-            if (response.ok){
-                return response;
             }
-            else{
-                var err = new Error('Error ' + response.status + ': ' + response.statusText);
-                err.response = response;
-                throw err;
-            }
-        },
-        (error) => {
-            throw new Error(error.message);
         })
-        .then((response) => (response.json()))
-        .then((response) => {
-            localStorage.setItem('token', response.token);
+        .then((response) => response.data)
+        .then((data) => {
+            localStorage.setItem('token', data.token);
             dispatch(authSuccess());
         })
         .catch((error) => dispatch(authFailure("Incorrect login credentials!")));
@@ -297,50 +196,18 @@ export const registerUserFailure = (errMsg) => ({
     payload: errMsg
 })
 
-export const registerNewUser = (
-    username, 
-    first_name,
-    last_name,
-    email,
-    address,
-    phone_number,
-    password,
-    avatar
-    ) => (dispatch) => {
-        var newUser = {
-            username: username,
-            first_name: first_name,
-            last_name: last_name,
-            email: email,
-            address: address,
-            phone_number: phone_number,
-            password: password,
-            avatar: avatar
-        };
-        return fetch(baseUrl + '/api/accounts/users/', {
-            method: "POST",
-            body: JSON.stringify(newUser),
+export const registerNewUser = (formData) => (dispatch) => {
+    return axios.post(baseUrl + '/api/accounts/users/', formData, {
             headers: {
-                'Content-Type': 'application/json'
+                'content-type': 'multipart/form-data'
             }
         })
-        .then((response) => {
-            if (response.ok){
-                return response;
-            }
-            var err = new Error("Error " + response.status + ": " + response.statusText);
-            err.response = response;
-            throw err;
-        },
-        (error) => {
-            throw new Error(error.message);
+        .then((response) => response.data)
+        .then((data) => {
+            dispatch(registerUserSuccess(data.user));
+            localStorage.setItem('token', data.token);
+            dispatch(authSuccess(data.user));
         })
-        .then((response) => response.json())
-        .then((response) => {
-            dispatch(registerUserSuccess(response.user));
-            localStorage.setItem('token', response.token);
-            dispatch(authSuccess(response.user));
-        })
-        .catch((error) => dispatch(registerUserFailure(error.message)))
+        .catch((error) => dispatch(registerUserFailure(error.message)));
     }
 
