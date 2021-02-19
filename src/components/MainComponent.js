@@ -15,7 +15,7 @@ import Supper from './SupperComponent';
 import {
     fetchCuisines, fetchTypes, fetchFoods, fetchDrinks, 
     fetchDailyFoods, fetchReviews, authenticate, logout,
-    registerNewUser} from '../redux/ActionCreators';
+    registerNewUser, fetchUserReview, fetchUser, addReview} from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 
 const mapDispatchToProps = (dispatch) => {
@@ -29,7 +29,11 @@ const mapDispatchToProps = (dispatch) => {
         authenticate: (username, password) => dispatch(authenticate(username, password)),
         logout: () => dispatch(logout()),
         resetSignupForm: () => dispatch(actions.reset('signup')),
-        registerNewUser: (formData) => dispatch(registerNewUser(formData))
+        resetReviewForm: () => dispatch(actions.reset('review')),
+        registerNewUser: (formData) => dispatch(registerNewUser(formData)),
+        fetchUserReview: () => dispatch(fetchUserReview()),
+        fetchUser: () => dispatch(fetchUser()),
+        addReview: (formData) => dispatch(addReview(formData)) 
     };
 }
 
@@ -43,7 +47,8 @@ const mapStateToProps = (store) => {
         dinner: store.dinner,
         supper: store.supper,
         reviews: store.reviews,
-        login: store.login
+        user: store.user,
+        userReview: store.userReview
     };
 }
 
@@ -55,23 +60,42 @@ class Main extends Component {
         this.props.fetchDrinks();
         this.props.fetchDailyFoods();
         this.props.fetchReviews();
+        this.props.fetchUserReview();
+        this.props.fetchUser();
     }
     render(){
         return(
             <React.Fragment>
-                <Navbar logout={this.props.logout} isLoggedIn={this.props.login.isLoggedIn} 
-                        auth={this.props.authenticate} login={this.props.login} 
-                        resetSignupForm={this.props.resetSignupForm} registerNewUser={this.props.registerNewUser} />
+                <Navbar logout={this.props.logout} 
+                        isLoggedIn={this.props.user.isLoggedIn} 
+                        auth={this.props.authenticate} 
+                        user={this.props.user} 
+                        resetSignupForm={this.props.resetSignupForm} 
+                        registerNewUser={this.props.registerNewUser} />
                 <Switch>
                     <Route path='/home' component={() => <Home discountFoods={this.props.foods.foods.filter((food) => food.discount)} 
-                                                            reviews={this.props.reviews.reviews} isLoading={this.props.reviews.isLoading} errMsg={this.props.reviews.errMsg}/>} />
-                    <Route exact path='/menu' component={() => <Menu cuisines={this.props.cuisines.cuisines} errMsgCuisines={this.props.cuisines.errMsg}
-                                                                types={this.props.types.types} errMsgTypes={this.props.types.errMsg}
-                                                                foods={this.props.foods.foods} errMsgFoods={this.props.foods.errMsg}/>}/>
-                    <Route path='/menu/breakfast' component={() => <Breakfast foods={this.props.breakfast.foods} errMsg={this.props.breakfast.errMsg} />} />    
-                    <Route path='/menu/dinner' component={() => <Dinner foods={this.props.dinner.foods} errMsg={this.props.dinner.errMsg} />} />   
-                    <Route path='/menu/supper' component={() => <Supper foods={this.props.supper.foods} errMsg={this.props.supper.errMsg} />} />                                     
-                    <Route path='/drinks' component={() => <Drinks drinks={this.props.drinks.drinks} errMsg={this.props.drinks.errMsg} />} />
+                                                            reviews={this.props.reviews.reviews} 
+                                                            isLoading={this.props.reviews.isLoading} 
+                                                            errMsg={this.props.reviews.errMsg}
+                                                            isLoggedIn={this.props.user.isLoggedIn} 
+                                                            user={this.props.user.user}
+                                                            userReview={this.props.userReview} 
+                                                            resetReviewForm={this.props.resetReviewForm}
+                                                            addReview={this.props.addReview} />} />
+                    <Route exact path='/menu' component={() => <Menu cuisines={this.props.cuisines.cuisines} 
+                                                                    errMsgCuisines={this.props.cuisines.errMsg}
+                                                                    types={this.props.types.types} 
+                                                                    errMsgTypes={this.props.types.errMsg}
+                                                                    foods={this.props.foods.foods} 
+                                                                    errMsgFoods={this.props.foods.errMsg}/>}/>
+                    <Route path='/menu/breakfast' component={() => <Breakfast foods={this.props.breakfast.foods} 
+                                                                            errMsg={this.props.breakfast.errMsg} />} />    
+                    <Route path='/menu/dinner' component={() => <Dinner foods={this.props.dinner.foods} 
+                                                                        errMsg={this.props.dinner.errMsg} />} />   
+                    <Route path='/menu/supper' component={() => <Supper foods={this.props.supper.foods} 
+                                                                        errMsg={this.props.supper.errMsg} />} />                                     
+                    <Route path='/drinks' component={() => <Drinks drinks={this.props.drinks.drinks} 
+                                                                    errMsg={this.props.drinks.errMsg} />} />
                     <Route path='/dashboard' component={Dashboard} /> 
                     <Redirect to='/home' />
                 </Switch>

@@ -31,7 +31,7 @@ class Login extends Component{
                 <ModalBody>
                     <form onSubmit={(values) => this.handleSubmit(values)}>
                         <h5><strong>Log</strong> into <span className="text-primary">Account</span></h5>
-                        {this.props.login.errMsg && (<h5 className="text-danger">{this.props.login.errMsg}</h5>)}
+                        {this.props.user.errMsg && (<h5 className="text-danger">{this.props.user.errMsg}</h5>)}
                         <div className="form-group">
                             <input type="text" className="form-control" name="username" 
                                 placeholder="Username" value={this.state.username} onChange={this.handleChange} required />

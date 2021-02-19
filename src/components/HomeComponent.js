@@ -13,7 +13,7 @@ import baseUrl from '../redux/baseUrl';
 const SectionHero = () => {
     return(
         <section className="hero position-relative">
-            <h3 className="hero-title">Do you want to eat <strong>a delicious food</strong> in the world?</h3>
+            <h3 className="hero-title">Would you like to eat <strong>a delicious food</strong> in the world?</h3>
             <div className="hero-footer-image">
                 <img src="assets/images/ink_white.png" alt="" />
             </div>
@@ -160,7 +160,7 @@ const RenderReview = (props) => {
 }
 
 const SectionReviews = (props) => {
-    if (props.errMsg || props.isLoading){
+    if (props.errMsg || props.isLoading || !props.reviews){
         return(
             <div></div>
         );
@@ -190,8 +190,16 @@ const SectionReviews = (props) => {
         <section className="reviews mt-5">
             <h3 className="title text-center text-white">
                 What others say...
-                {/* <button data-toggle="modal" data-target="#rateWindow" className="review-btn" id="editReviewBtn">Edit Your Review</button> */}
-                <button data-toggle="modal" data-target="#rateWindow" className="review-btn" id="leaveReviewBtn">Leave Review</button>
+                {props.isLoggedIn &&
+                <React.Fragment>
+                    {props.userHasReview &&
+                    <button className="review-btn" id="editReviewBtn" onClick={props.toggle}>Edit Your Review</button>
+                    }
+                    {!props.userHasReview &&
+                    <button className="review-btn" id="editReviewBtn" onClick={props.toggle}>Leave Review</button>
+                    }
+                </React.Fragment>
+                }
             </h3>
             <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
                 <ol className="carousel-indicators">
@@ -214,6 +222,18 @@ const SectionReviews = (props) => {
 }
 
 class Home extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            isReviewModalOpen: false
+        }
+        this.toggleReviewModal = this.toggleReviewModal.bind(this);
+    }
+    toggleReviewModal = () => {
+        this.setState({
+            isReviewModalOpen: !this.state.isReviewModalOpen
+        })
+    }
     render(){
         return(
             <React.Fragment>
@@ -224,8 +244,20 @@ class Home extends Component{
                     <SectionDailyFood />
                     <SectionDiscountFoods discountFoods={this.props.discountFoods} />
                 </div>
-                <SectionReviews reviews={this.props.reviews} isLoading={this.props.isLoading} errMsg={this.props.errMsg}/>
-                <LeaveReview />
+                <SectionReviews reviews={this.props.reviews} 
+                                isLoading={this.props.isLoading} 
+                                errMsg={this.props.errMsg}
+                                isLoggedIn={this.props.isLoggedIn} 
+                                toggle={this.toggleReviewModal} 
+                                userHasReview={this.props.userReview.review?true:false} />
+                {this.props.isLoggedIn &&
+                <LeaveReview isOpen={this.state.isReviewModalOpen} 
+                            toggle={this.toggleReviewModal}
+                            user={this.props.user}
+                            userReview={this.props.userReview}
+                            resetForm={this.props.resetReviewForm}
+                            addReview={this.props.addReview} />
+                }
             </React.Fragment>
         );
     }

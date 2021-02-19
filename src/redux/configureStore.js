@@ -11,7 +11,8 @@ import Dinner from './dinner';
 import Supper from './supper';
 import Reviews from './reviews';
 import Login from './login';
-import {InitialSignup} from './forms';
+import UserReview from './userReview';
+import {InitialSignup, InitialReview} from './forms';
 
 export const configureStore = () => {
     const store = createStore(combineReducers({
@@ -23,9 +24,11 @@ export const configureStore = () => {
         dinner: Dinner,
         supper: Supper,
         reviews: Reviews,
-        login: Login,
+        user: Login,
+        userReview: UserReview,
         ...createForms({
-            signup: InitialSignup
+            signup: InitialSignup,
+            review: InitialReview
         }) 
     }), applyMiddleware(thunk, logger));
     return store;

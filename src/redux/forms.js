@@ -9,3 +9,7 @@ export const InitialSignup = {
     conf_password: "",
     avatar: "",
 }
+
+export const InitialReview = {
+    content: ""
+}

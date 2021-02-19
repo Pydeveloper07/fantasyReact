@@ -6,6 +6,9 @@ const Reviews = (state = {
         reviews: []
     }, action) => {
         switch(action.type){
+            case ActionTypes.ADD_REVIEW_SUCCESS:
+                var newReview = action.payload;
+                return {...state, isLoading: false, errMsg: null, reviews: state.reviews.concat(newReview)};
             case ActionTypes.ADD_REVIEWS:
                 return {...state, isLoading: false, errMsg: null, reviews: action.payload};
             case ActionTypes.REVIEWS_LOADING:

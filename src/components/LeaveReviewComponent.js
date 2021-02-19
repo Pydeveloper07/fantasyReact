@@ -1,50 +1,96 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, {Component} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faStar} from '@fortawesome/fontawesome-free-solid';
+import {Form, Control, Errors} from 'react-redux-form';
+import {Modal, ModalBody, ModalHeader} from 'reactstrap';
 
+const content_vld = (val) => val.length;
 class LeaveReview extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            rate: this.props.userReview.review?this.props.userReview.review.rate:0,
+            rateErr: null
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick = (value) => {
+        this.setState({rate: value});
+    }
+
+    handleSubmit = (values) => {
+        if (!this.state.rate){
+            this.setState({rateErr: "This field is required"})
+        }
+        let formData = new FormData();
+        formData.append('rate', this.state.rate);
+        formData.append('content', values.content);
+        this.props.addReview(formData);
+        return;
+    }
     render(){
+        var array = [1, 2, 3, 4, 5];
+        var rateList = array.map((value) => {
+            if (value <= this.state.rate){
+                return (
+                    <FontAwesomeIcon key={value} icon={faStar} onClick={() => this.handleClick(value)} className="checked"></FontAwesomeIcon>
+                );
+            }
+            return (
+                <FontAwesomeIcon key={value} icon={faStar} onClick={() => this.handleClick(value)}></FontAwesomeIcon>
+            );
+        });
+        var reactionEmoji = null;
+        switch(this.state.rate){
+            case 1: 
+                reactionEmoji = (<span id="rate-emoji" className="ec ec-confounded"></span>);
+                break;
+            case 2: 
+                reactionEmoji = (<span id="rate-emoji" className="ec ec-expressionless"></span>);
+                break;
+            case 3: 
+                reactionEmoji = (<span id="rate-emoji" className="ec ec-blush"></span>);
+                break;
+            case 4: 
+                reactionEmoji = (<span id="rate-emoji" className="ec ec-yum"></span>);
+                break;
+            case 5: 
+                reactionEmoji = (<span id="rate-emoji" className="ec ec-heart-eyes"></span>);
+                break;
+            default:
+                reactionEmoji = null;
+        }
         return(
-            <div className="modal rating-modal fade" id="rateWindow" tabIndex="-1" role="dialog" aria-labelledby="rateWindowTitle"
-            aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered" role="document">
-                    <div className="modal-content position-relative">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLongTitle">Rate Our Service</h5>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+            <Modal isOpen={this.props.isOpen} toggle={this.props.toggle} className="rating-modal" id="rateWindow">
+                <ModalHeader toggle={this.props.toggle}>Rate Our Service</ModalHeader>
+                <ModalBody>
+                    <Form model="review" onSubmit={(values) => this.handleSubmit(values)}>
+                        <h5 className="text-center text-primary">
+                            {this.props.user && this.props.user.first_name && this.props.user.last_name &&
+                            <strong>{this.props.user.first_name} {this.props.user.last_name}'s review</strong>
+                            }
+                            {this.props.user && !this.props.user.first_name && 
+                            <strong>{this.props.user.username}'s review</strong>
+                            }
+                        </h5>
+                        <div className="rating-block mb-2">
+                            <span>Rating:</span>
+                            {rateList}
+                            {reactionEmoji}
+                            <span id="rateError" className="text-danger font-weight-bold ml-2" style={{fontSize: 'small'}}>{this.state.rateErr}</span>
                         </div>
-                        <div className="modal-body">
-                            <form id="reviewForm">
-                                <h5 className="text-center alert alert-danger"><strong>You must login first!</strong></h5>
-                                <h5 className="text-center text-primary">
-                                    <strong>Tukhtamurod Isroilov's review</strong>
-                                </h5>
-                                <div className="rating-block">
-                                    <span>Rating:</span>
-                                    <FontAwesomeIcon icon={faStar} className="fa star checked"></FontAwesomeIcon>
-                                    <FontAwesomeIcon icon={faStar} className="fa star checked"></FontAwesomeIcon>
-                                    <FontAwesomeIcon icon={faStar} className="fa star checked"></FontAwesomeIcon>
-                                    <FontAwesomeIcon icon={faStar} className="fa star"></FontAwesomeIcon>
-                                    <FontAwesomeIcon icon={faStar} className="fa star"></FontAwesomeIcon>
-                                    <span id="rate-emoji"></span>
-                                    <span id="rateError" className="text-danger font-weight-bold" style={{fontSize: 'small', display: 'none'}}>This field is required</span>
-                                    <p><small>4.3 average based on 200 reviews</small></p>
-                                </div>
-                                <input type="hidden" name="rating" id="rating" />
-                                <input type="hidden" name="review_status" id="reviewStatus" />
-                                <div className="form-group">
-                                    <textarea className="form-control" name="content" cols="30" rows="3" id="reviewContent"
-                                    placeholder="Enter your review here..." disabled></textarea>
-                                    <span id="reviewContentError" className="text-danger font-weight-bold" style={{fontSize: 'small', display: 'none'}}>This field is required</span>
-                                </div>
-                                <button type="submit" className="btn btn-primary mb-2">Submit</button>
-                            </form>
+                        <div className="form-group">
+                            <Control.textarea className="form-control" model=".content" name="content" cols="30" rows="3" id="reviewContent"
+                                placeholder="Enter your review here..." validators={{content_vld: content_vld}}></Control.textarea>
+                            <Errors className="text-danger" model=".content" show="touched" messages={{content_vld: "This field is required"}}></Errors>
                         </div>
-                    </div>
-                </div>
-            </div>
+                        <button type="submit" className="btn btn-primary mb-2">Submit</button>
+                    </Form>
+                </ModalBody>
+            </Modal>
         );
     }
 }

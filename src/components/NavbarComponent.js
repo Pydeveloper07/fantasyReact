@@ -51,7 +51,7 @@ class Navbar extends Component{
                             <React.Fragment>
                                 <li className="nav-item">
                                     <a className="nav-link" id="login" onClick={this.toggleLogin} >Log in</a>
-                                    <Login auth={this.props.auth} login={this.props.login} 
+                                    <Login auth={this.props.auth} user={this.props.user} 
                                             isOpen={this.state.isLoginModelOpen} toggle={this.toggleLogin} />
                                 </li>
                                 <li className="nav-item">

@@ -149,9 +149,8 @@ export const fetchReviews = () => (dispatch) => {
                 .catch((error) => dispatch(reviewsFailed(error.message)));
 }
 
-export const authSuccess = (user) => ({
+export const authSuccess = () => ({
     type: ActionTypes.LOGIN_SUCCESS,
-    payload: user
 })
 
 export const authFailure = (errMsg) => ({
@@ -172,9 +171,32 @@ export const authenticate = (username, password) => (dispatch) => {
         .then((response) => response.data)
         .then((data) => {
             localStorage.setItem('token', data.token);
-            dispatch(authSuccess());
+            dispatch(authSuccess(data.user));
+            dispatch(fetchUser());
+            dispatch(fetchUserReview());
         })
         .catch((error) => dispatch(authFailure("Incorrect login credentials!")));
+}
+
+export const addUser = (user) => ({
+    type: ActionTypes.ADD_USER,
+    payload: user
+})
+
+export const userFailed = (errMsg) => ({
+    type: ActionTypes.USER_FAILED,
+    payload: errMsg
+})
+
+export const fetchUser = () => (dispatch) => {
+    return axios.get(baseUrl + '/api/accounts/current_user/', {
+                    headers:{
+                        Authorization: `JWT ${localStorage.getItem('token')}`
+                    }
+                })
+                .then((response) => response.data)
+                .then((user) => dispatch(addUser(user)))
+                .catch((error) => dispatch(userFailed(error.message)));
 }
 
 export const logoutSuccess = () => ({
@@ -204,10 +226,59 @@ export const registerNewUser = (formData) => (dispatch) => {
         })
         .then((response) => response.data)
         .then((data) => {
-            dispatch(registerUserSuccess(data.user));
+            dispatch(registerUserSuccess(data.username));
             localStorage.setItem('token', data.token);
-            dispatch(authSuccess(data.user));
+            dispatch(authSuccess(data.username));
+            dispatch(fetchUser());
+            dispatch(fetchUserReview());
         })
         .catch((error) => dispatch(registerUserFailure(error.message)));
     }
 
+export const addUserReview = (review) => ({
+    type: ActionTypes.ADD_USER_REVIEW,
+    payload: review
+})
+
+export const userReviewFailed = (errMsg) => ({
+    type: ActionTypes.USER_REVIEW_FAILED,
+    payload: errMsg
+})
+
+export const fetchUserReview = () => (dispatch) => {
+    return axios.get(baseUrl + '/api/pages/user-review/', {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        })
+        .then((response) => response.data)
+        .then((review) => dispatch(addUserReview(review)))
+        .catch((error) => dispatch(userReviewFailed(error.message)));
+}
+
+export const addReviewSuccess = (review) => ({
+    type: ActionTypes.ADD_REVIEW_SUCCESS,
+    payload: review
+})
+
+export const addReviewFailed = (errMsg) => ({
+    type: ActionTypes.ADD_REVIEW_FAILED,
+    payload: errMsg
+})
+
+export const addReview = (formData) => (dispatch) => {
+    formData.append('created_date', new Date().toISOString());
+    formData.append('user', 4);
+    return axios.post(baseUrl + '/api/pages/user-review/', formData, {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        })
+        .then((response) => response.data)
+        .then((review) => {
+            dispatch(addReviewSuccess(review));
+            dispatch(fetchUserReview());
+        })
+        .catch((error) => dispatch(addReviewFailed(error.message)));
+}
