@@ -11,6 +11,7 @@ class LeaveReview extends Component{
         super(props);
         this.state = {
             rate: this.props.userReview.review?this.props.userReview.review.rate:0,
+            content: this.props.userReview.review?this.props.userReview.review.content:"",
             rateErr: null
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,7 +29,16 @@ class LeaveReview extends Component{
         let formData = new FormData();
         formData.append('rate', this.state.rate);
         formData.append('content', values.content);
-        this.props.addReview(formData);
+        if (this.props.userReview.review){
+            this.props.updateReview(formData);
+            this.props.resetForm();
+            this.props.toggle();
+        }
+        else{
+            this.props.addReview(formData);
+            this.props.resetForm();
+            this.props.toggle();
+        }
         return;
     }
     render(){
@@ -84,7 +94,8 @@ class LeaveReview extends Component{
                         </div>
                         <div className="form-group">
                             <Control.textarea className="form-control" model=".content" name="content" cols="30" rows="3" id="reviewContent"
-                                placeholder="Enter your review here..." validators={{content_vld: content_vld}}></Control.textarea>
+                            placeholder="Enter your review here..." validators={{content_vld: content_vld}}>
+                            </Control.textarea>
                             <Errors className="text-danger" model=".content" show="touched" messages={{content_vld: "This field is required"}}></Errors>
                         </div>
                         <button type="submit" className="btn btn-primary mb-2">Submit</button>

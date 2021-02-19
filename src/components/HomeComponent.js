@@ -256,7 +256,8 @@ class Home extends Component{
                             user={this.props.user}
                             userReview={this.props.userReview}
                             resetForm={this.props.resetReviewForm}
-                            addReview={this.props.addReview} />
+                            addReview={this.props.addReview}
+                            updateReview={this.props.updateReview} />
                 }
             </React.Fragment>
         );

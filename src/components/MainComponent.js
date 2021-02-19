@@ -15,7 +15,8 @@ import Supper from './SupperComponent';
 import {
     fetchCuisines, fetchTypes, fetchFoods, fetchDrinks, 
     fetchDailyFoods, fetchReviews, authenticate, logout,
-    registerNewUser, fetchUserReview, fetchUser, addReview} from '../redux/ActionCreators';
+    registerNewUser, fetchUserReview, fetchUser, addReview,
+    updateReview} from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 
 const mapDispatchToProps = (dispatch) => {
@@ -33,7 +34,8 @@ const mapDispatchToProps = (dispatch) => {
         registerNewUser: (formData) => dispatch(registerNewUser(formData)),
         fetchUserReview: () => dispatch(fetchUserReview()),
         fetchUser: () => dispatch(fetchUser()),
-        addReview: (formData) => dispatch(addReview(formData)) 
+        addReview: (formData) => dispatch(addReview(formData)),
+        updateReview: (formData) => dispatch(updateReview(formData)) 
     };
 }
 
@@ -81,7 +83,8 @@ class Main extends Component {
                                                             user={this.props.user.user}
                                                             userReview={this.props.userReview} 
                                                             resetReviewForm={this.props.resetReviewForm}
-                                                            addReview={this.props.addReview} />} />
+                                                            addReview={this.props.addReview}
+                                                            updateReview={this.props.updateReview} />} />
                     <Route exact path='/menu' component={() => <Menu cuisines={this.props.cuisines.cuisines} 
                                                                     errMsgCuisines={this.props.cuisines.errMsg}
                                                                     types={this.props.types.types} 

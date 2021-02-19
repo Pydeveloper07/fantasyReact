@@ -269,7 +269,6 @@ export const addReviewFailed = (errMsg) => ({
 
 export const addReview = (formData) => (dispatch) => {
     formData.append('created_date', new Date().toISOString());
-    formData.append('user', 4);
     return axios.post(baseUrl + '/api/pages/user-review/', formData, {
             headers: {
                 Authorization: `JWT ${localStorage.getItem('token')}`
@@ -281,4 +280,26 @@ export const addReview = (formData) => (dispatch) => {
             dispatch(fetchUserReview());
         })
         .catch((error) => dispatch(addReviewFailed(error.message)));
+}
+
+export const updateReviewSuccess = (updatedReview) => ({
+    type: ActionTypes.UPDATE_REVIEW_SUCCESS,
+    payload: updatedReview
+})
+
+export const updateReviewFailed = (errMsg) => ({
+    type: ActionTypes.UPDATE_REVIEW_FAILED,
+    payload: errMsg
+})
+
+export const updateReview = (formData) => (dispatch) => {
+    formData.append('created_date', new Date().toISOString());
+    return axios.put(baseUrl + '/api/pages/user-review/', formData, {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        })
+        .then((response) => response.data)
+        .then((updatedReview) => dispatch(updateReviewSuccess(updatedReview)))
+        .catch((error) => dispatch(updateReviewFailed(error.message)));
 }
