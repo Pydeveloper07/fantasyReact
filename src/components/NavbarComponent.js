@@ -5,19 +5,23 @@ import {faShoppingCart, faBars} from '@fortawesome/fontawesome-free-solid';
 import {Link} from 'react-router-dom';
 import Signup from './SignupComponent';
 import Login from './LoginComponent';
+import ContactUs from './ContactUsComponent';
 
 class Navbar extends Component{
     constructor(props){
         super(props);
         this.state = {
             isSignupModelOpen: false,
-            isLoginModelOpen: false
+            isLoginModelOpen: false,
+            isContactModelOpen: false,
         };
         this.toggleSignup = this.toggleSignup.bind(this);
         this.toggleLogin = this.toggleLogin.bind(this);
+        this.toggleContact = this.toggleContact.bind(this);
     }
     toggleSignup = () => this.setState({isSignupModelOpen: !this.state.isSignupModelOpen})
     toggleLogin = () => this.setState({isLoginModelOpen: !this.state.isLoginModelOpen})
+    toggleContact = () => this.setState({isContactModelOpen: !this.state.isContactModelOpen})
     render(){
         return(
             <nav className="navbar navbar-expand-lg custom-nav row wow fadeInDown">
@@ -37,7 +41,12 @@ class Navbar extends Component{
                                 <a className="nav-link" data-toggle="modal" data-target="#orderTableWindow" id="tableOrderLink">Table Ordering</a>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" data-toggle="modal" data-target="#contactUsWindow">Contact Us</a>
+                                <a className="nav-link" onClick={this.toggleContact}>Contact Us</a>
+                                <ContactUs isOpen={this.state.isContactModelOpen} 
+                                            toggle={this.toggleContact}
+                                            resetForm={this.props.resetContactForm}
+                                            user={this.props.user}
+                                            postForm={this.props.postContactForm} />
                             </li>
                             {this.props.isLoggedIn && 
                             <li className="nav-item">

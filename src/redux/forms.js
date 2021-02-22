@@ -13,3 +13,9 @@ export const InitialSignup = {
 export const InitialReview = {
     content: ""
 }
+
+export const InitialContact = {
+    subject: "",
+    email: "",
+    message: ""
+}

@@ -4,7 +4,6 @@ import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Home from './HomeComponent';
 import Footer from './FooterComponent';
-import ContactUs from './ContactUsComponent';
 import TableOrder from './TableOrderComponent';
 import Menu from './MenuComponent';
 import Dashboard from './DashboardComponent';
@@ -13,10 +12,20 @@ import Breakfast from './BreakfastComponent';
 import Dinner from './DinnerComponent';
 import Supper from './SupperComponent';
 import {
-    fetchCuisines, fetchTypes, fetchFoods, fetchDrinks, 
-    fetchDailyFoods, fetchReviews, authenticate, logout,
-    registerNewUser, fetchUserReview, fetchUser, addReview,
-    updateReview} from '../redux/ActionCreators';
+    fetchCuisines, 
+    fetchTypes, 
+    fetchFoods, 
+    fetchDrinks, 
+    fetchDailyFoods, 
+    fetchReviews, 
+    authenticate, 
+    logout,
+    registerNewUser, 
+    fetchUserReview, 
+    fetchUser, 
+    addReview,
+    updateReview,
+    postContactForm} from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 
 const mapDispatchToProps = (dispatch) => {
@@ -31,11 +40,13 @@ const mapDispatchToProps = (dispatch) => {
         logout: () => dispatch(logout()),
         resetSignupForm: () => dispatch(actions.reset('signup')),
         resetReviewForm: () => dispatch(actions.reset('review')),
+        resetContactForm: () => dispatch(actions.reset('contact')),
         registerNewUser: (formData) => dispatch(registerNewUser(formData)),
         fetchUserReview: () => dispatch(fetchUserReview()),
         fetchUser: () => dispatch(fetchUser()),
         addReview: (formData) => dispatch(addReview(formData)),
-        updateReview: (formData) => dispatch(updateReview(formData)) 
+        updateReview: (formData) => dispatch(updateReview(formData)),
+        postContactForm: (formData => dispatch(postContactForm(formData)))
     };
 }
 
@@ -72,8 +83,10 @@ class Main extends Component {
                         isLoggedIn={this.props.user.isLoggedIn} 
                         auth={this.props.authenticate} 
                         user={this.props.user} 
-                        resetSignupForm={this.props.resetSignupForm} 
-                        registerNewUser={this.props.registerNewUser} />
+                        resetSignupForm={this.props.resetSignupForm}
+                        resetContactForm={this.props.resetContactForm} 
+                        registerNewUser={this.props.registerNewUser}
+                        postContactForm={this.props.postContactForm} />
                 <Switch>
                     <Route path='/home' component={() => <Home discountFoods={this.props.foods.foods.filter((food) => food.discount)} 
                                                             reviews={this.props.reviews.reviews} 
@@ -102,7 +115,6 @@ class Main extends Component {
                     <Route path='/dashboard' component={Dashboard} /> 
                     <Redirect to='/home' />
                 </Switch>
-                <ContactUs />
                 <TableOrder />
                 <Footer />
             </React.Fragment>

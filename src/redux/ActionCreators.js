@@ -47,7 +47,7 @@ export const foodsFailed = (errMsg) => ({
 })
 
 export const fetchFoods = () => (dispatch) => {
-    return axios.get(baseUrl + '/api/menu/foods')
+    return axios.get(baseUrl + '/api/menu/foods/')
                 .then((response) => response.data)
                 .then((foods) => dispatch(addFoods(foods)))
                 .catch((error) => dispatch(foodsFailed(error.message)))
@@ -302,4 +302,11 @@ export const updateReview = (formData) => (dispatch) => {
         .then((response) => response.data)
         .then((updatedReview) => dispatch(updateReviewSuccess(updatedReview)))
         .catch((error) => dispatch(updateReviewFailed(error.message)));
+}
+
+export const postContactForm = (formData) => (dispatch) => {
+    return axios.post(baseUrl + '/api/pages/contact/', formData)
+                .then((response) => response.data)
+                .then((message) => alert(message.message))
+                .catch((error) => console.log(error.message));
 }
