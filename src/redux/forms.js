@@ -19,3 +19,10 @@ export const InitialContact = {
     email: "",
     message: ""
 }
+
+export const InitialOrderTable = {
+    tableId: "",
+    numOfPeople: 0,
+    startTime: null,
+    endTime: null
+}

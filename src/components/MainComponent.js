@@ -25,7 +25,8 @@ import {
     fetchUser, 
     addReview,
     updateReview,
-    postContactForm} from '../redux/ActionCreators';
+    postContactForm,
+    fetchTables} from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 
 const mapDispatchToProps = (dispatch) => {
@@ -41,12 +42,14 @@ const mapDispatchToProps = (dispatch) => {
         resetSignupForm: () => dispatch(actions.reset('signup')),
         resetReviewForm: () => dispatch(actions.reset('review')),
         resetContactForm: () => dispatch(actions.reset('contact')),
+        resetOrderTableForm: () => dispatch(actions.reset('orderTable')),
         registerNewUser: (formData) => dispatch(registerNewUser(formData)),
         fetchUserReview: () => dispatch(fetchUserReview()),
         fetchUser: () => dispatch(fetchUser()),
         addReview: (formData) => dispatch(addReview(formData)),
         updateReview: (formData) => dispatch(updateReview(formData)),
-        postContactForm: (formData => dispatch(postContactForm(formData)))
+        postContactForm: (formData => dispatch(postContactForm(formData))),
+        fetchTables: () => dispatch(fetchTables())
     };
 }
 
@@ -61,7 +64,8 @@ const mapStateToProps = (store) => {
         supper: store.supper,
         reviews: store.reviews,
         user: store.user,
-        userReview: store.userReview
+        userReview: store.userReview,
+        tables: store.tables
     };
 }
 
@@ -84,9 +88,12 @@ class Main extends Component {
                         auth={this.props.authenticate} 
                         user={this.props.user} 
                         resetSignupForm={this.props.resetSignupForm}
-                        resetContactForm={this.props.resetContactForm} 
+                        resetContactForm={this.props.resetContactForm}
+                        resetOrderTableForm={this.props.resetOrderTableForm} 
                         registerNewUser={this.props.registerNewUser}
-                        postContactForm={this.props.postContactForm} />
+                        postContactForm={this.props.postContactForm}
+                        fetchTables={this.props.fetchTables}
+                        tables={this.props.tables} />
                 <Switch>
                     <Route path='/home' component={() => <Home discountFoods={this.props.foods.foods.filter((food) => food.discount)} 
                                                             reviews={this.props.reviews.reviews} 

@@ -171,6 +171,10 @@ export const authenticate = (username, password) => (dispatch) => {
         .then((response) => response.data)
         .then((data) => {
             localStorage.setItem('token', data.token);
+            setTimeout(() => {
+                alert("Your session has expired!");
+                dispatch(logoutSuccess());
+            }, data.expiry_time);
             dispatch(authSuccess(data.user));
             dispatch(fetchUser());
             dispatch(fetchUserReview());
@@ -309,4 +313,25 @@ export const postContactForm = (formData) => (dispatch) => {
                 .then((response) => response.data)
                 .then((message) => alert(message.message))
                 .catch((error) => console.log(error.message));
+}
+
+export const addTablesSuccess = (tables) => ({
+    type: ActionTypes.TABLES_SUCCESS,
+    payload: tables
+})
+
+export const addTablesFailed = (errMsg) => ({
+    type: ActionTypes.TABLES_FAILED,
+    payload: errMsg
+})
+
+export const fetchTables = () => (dispatch) => {
+    return axios.get(baseUrl + '/api/pages/tables/', {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        })
+        .then((response) => response.data)
+        .then((tables) => dispatch(addTablesSuccess(tables)))
+        .catch((error) => dispatch(addTablesFailed(error.message)));
 }

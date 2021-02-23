@@ -6,22 +6,31 @@ import {Link} from 'react-router-dom';
 import Signup from './SignupComponent';
 import Login from './LoginComponent';
 import ContactUs from './ContactUsComponent';
+import TableOrder from './TableOrderComponent';
 
 class Navbar extends Component{
     constructor(props){
         super(props);
         this.state = {
-            isSignupModelOpen: false,
-            isLoginModelOpen: false,
-            isContactModelOpen: false,
+            isSignupModalOpen: false,
+            isLoginModalOpen: false,
+            isContactModalOpen: false,
+            isOrderTableModalOpen: false
         };
         this.toggleSignup = this.toggleSignup.bind(this);
         this.toggleLogin = this.toggleLogin.bind(this);
         this.toggleContact = this.toggleContact.bind(this);
+        this.toggleOrderTable = this.toggleOrderTable.bind(this);
     }
-    toggleSignup = () => this.setState({isSignupModelOpen: !this.state.isSignupModelOpen})
-    toggleLogin = () => this.setState({isLoginModelOpen: !this.state.isLoginModelOpen})
-    toggleContact = () => this.setState({isContactModelOpen: !this.state.isContactModelOpen})
+    toggleSignup = () => this.setState({isSignupModalOpen: !this.state.isSignupModalOpen})
+    toggleLogin = () => this.setState({isLoginModalOpen: !this.state.isLoginModalOpen})
+    toggleContact = () => this.setState({isContactModalOpen: !this.state.isContactModalOpen})
+    toggleOrderTable = () => {
+        if (this.props.isLoggedIn){
+            this.props.fetchTables();
+        }
+        this.setState({isOrderTableModalOpen: !this.state.isOrderTableModalOpen})
+    }
     render(){
         return(
             <nav className="navbar navbar-expand-lg custom-nav row wow fadeInDown">
@@ -38,11 +47,16 @@ class Navbar extends Component{
                                 <Link className="nav-link" to="/drinks">Drinks</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" data-toggle="modal" data-target="#orderTableWindow" id="tableOrderLink">Table Ordering</a>
+                                <a className="nav-link" onClick={this.toggleOrderTable}>Table Ordering</a>
+                                <TableOrder isOpen={this.state.isOrderTableModalOpen}
+                                    toggle={this.toggleOrderTable}
+                                    isLoggedIn={this.props.isLoggedIn}
+                                    resetForm={this.props.resetOrderTableForm}
+                                    tables={this.props.tables} />
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" onClick={this.toggleContact}>Contact Us</a>
-                                <ContactUs isOpen={this.state.isContactModelOpen} 
+                                <ContactUs isOpen={this.state.isContactModalOpen} 
                                             toggle={this.toggleContact}
                                             resetForm={this.props.resetContactForm}
                                             user={this.props.user}
@@ -61,11 +75,11 @@ class Navbar extends Component{
                                 <li className="nav-item">
                                     <a className="nav-link" id="login" onClick={this.toggleLogin} >Log in</a>
                                     <Login auth={this.props.auth} user={this.props.user} 
-                                            isOpen={this.state.isLoginModelOpen} toggle={this.toggleLogin} />
+                                            isOpen={this.state.isLoginModalOpen} toggle={this.toggleLogin} />
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" id="sign-up" onClick={this.toggleSignup}>Sign Up</a>
-                                    <Signup isOpen={this.state.isSignupModelOpen} toggle={this.toggleSignup} 
+                                    <Signup isOpen={this.state.isSignupModalOpen} toggle={this.toggleSignup} 
                                             resetForm={this.props.resetSignupForm} registerNewUser={this.props.registerNewUser}/>
                                 </li>
                             </React.Fragment>
