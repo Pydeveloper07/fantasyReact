@@ -178,6 +178,7 @@ export const authenticate = (username, password) => (dispatch) => {
             dispatch(authSuccess(data.user));
             dispatch(fetchUser());
             dispatch(fetchUserReview());
+            dispatch(fetchUserTables());
         })
         .catch((error) => dispatch(authFailure("Incorrect login credentials!")));
 }
@@ -334,4 +335,25 @@ export const fetchTables = () => (dispatch) => {
         .then((response) => response.data)
         .then((tables) => dispatch(addTablesSuccess(tables)))
         .catch((error) => dispatch(addTablesFailed(error.message)));
+}
+
+export const addUserTables = (tables) => ({
+    type: ActionTypes.USER_ORDERED_TABLES_SUCCESS,
+    payload: tables
+})
+
+export const userTablesFailed = (errMsg) => ({
+    type: ActionTypes.USER_ORDERED_TABLES_FAILED,
+    payload: errMsg
+})
+
+export const fetchUserTables = () => (dispatch) => {
+    return axios.get(baseUrl + '/api/pages/user-tables/', {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        })
+        .then((response) => response.data)
+        .then((tables) => dispatch(addUserTables(tables)))
+        .catch((error) => dispatch((userTablesFailed(error.message))));
 }

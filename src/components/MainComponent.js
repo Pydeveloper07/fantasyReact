@@ -65,7 +65,8 @@ const mapStateToProps = (store) => {
         reviews: store.reviews,
         user: store.user,
         userReview: store.userReview,
-        tables: store.tables
+        tables: store.tables,
+        userOrderedTables: store.userOrderedTables
     };
 }
 
@@ -119,7 +120,7 @@ class Main extends Component {
                                                                         errMsg={this.props.supper.errMsg} />} />                                     
                     <Route path='/drinks' component={() => <Drinks drinks={this.props.drinks.drinks} 
                                                                     errMsg={this.props.drinks.errMsg} />} />
-                    <Route path='/dashboard' component={Dashboard} /> 
+                    <Route path='/dashboard' component={() => <Dashboard userOrderedTables={this.props.userOrderedTables} />} /> 
                     <Redirect to='/home' />
                 </Switch>
                 <TableOrder />

@@ -19,6 +19,7 @@ import {
     InitialOrderTable
 } from './forms';
 import Tables from './tables';
+import UserOrderedTables from './userOrderedTables';
 
 export const configureStore = () => {
     const store = createStore(combineReducers({
@@ -33,6 +34,7 @@ export const configureStore = () => {
         user: Login,
         userReview: UserReview,
         tables: Tables,
+        userOrderedTables: UserOrderedTables,
         ...createForms({
             signup: InitialSignup,
             review: InitialReview,

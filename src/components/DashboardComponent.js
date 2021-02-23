@@ -142,6 +142,24 @@ const RenderOrder = (props) => {
         </div>
     );
 }
+const SectionActiveTableOrders = (props) => {
+    const orderList = props.orders.tables.length > 0?props.orders.tables.map((table) => {
+        return (
+            <h3 key={table.id} className="text-success">{table.id}. {table.start_time.substr(0, 5)} - {table.end_time.substr(0, 5)}</h3>
+        );
+    }):null;
+    return (
+        <section className="history mb-5">
+            <h2 className="text-center text-info mb-4">Your active table orders</h2>
+            <div className="row">
+                {props.orders.tables.length === 0 && 
+                <h4 className="text-warning">You currently have no tables ordered!</h4>
+                }
+                {orderList}
+            </div>
+        </section>
+    );
+}
 
 const SectionHistory = () => {
     var arr = [1, 2, 3];
@@ -171,6 +189,7 @@ class Dashboard extends Component{
                 <div className="container">
                     <UserInfo />
                     <SectionStatistics />
+                    <SectionActiveTableOrders orders={this.props.userOrderedTables} />
                     <SectionHistory />
                 </div>
                 <EditProfile />
