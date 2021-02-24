@@ -357,3 +357,24 @@ export const fetchUserTables = () => (dispatch) => {
         .then((tables) => dispatch(addUserTables(tables)))
         .catch((error) => dispatch((userTablesFailed(error.message))));
 }
+
+export const updateUserDetailsSuccess = (user) => ({
+    type: ActionTypes.UPDATE_USER_DETAILS_SUCCESS,
+    payload: user
+})
+
+export const updateUserDetailsFailed = (errMsg) => ({
+    type: ActionTypes.UPDATE_USER_DETAILS_FAILED,
+    payload: errMsg
+})
+
+export const updateUserDetails = (formData) => (dispatch) => {
+    return axios.put(baseUrl + '/api/accounts/user-update/', formData, {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        })
+        .then((response) => response.data)
+        .then((user) => dispatch(updateUserDetailsSuccess(user)))
+        .catch((error) => dispatch(updateUserDetailsFailed(error.message)));
+}

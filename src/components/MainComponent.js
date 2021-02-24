@@ -26,7 +26,8 @@ import {
     addReview,
     updateReview,
     postContactForm,
-    fetchTables} from '../redux/ActionCreators';
+    fetchTables,
+    updateUserDetails} from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 
 const mapDispatchToProps = (dispatch) => {
@@ -43,13 +44,15 @@ const mapDispatchToProps = (dispatch) => {
         resetReviewForm: () => dispatch(actions.reset('review')),
         resetContactForm: () => dispatch(actions.reset('contact')),
         resetOrderTableForm: () => dispatch(actions.reset('orderTable')),
+        resetEditProfileForm: () => dispatch(actions.reset('editProfile')),
         registerNewUser: (formData) => dispatch(registerNewUser(formData)),
         fetchUserReview: () => dispatch(fetchUserReview()),
         fetchUser: () => dispatch(fetchUser()),
         addReview: (formData) => dispatch(addReview(formData)),
         updateReview: (formData) => dispatch(updateReview(formData)),
         postContactForm: (formData => dispatch(postContactForm(formData))),
-        fetchTables: () => dispatch(fetchTables())
+        fetchTables: () => dispatch(fetchTables()),
+        updateUserDetails: (formData) => dispatch(updateUserDetails(formData))
     };
 }
 
@@ -120,7 +123,10 @@ class Main extends Component {
                                                                         errMsg={this.props.supper.errMsg} />} />                                     
                     <Route path='/drinks' component={() => <Drinks drinks={this.props.drinks.drinks} 
                                                                     errMsg={this.props.drinks.errMsg} />} />
-                    <Route path='/dashboard' component={() => <Dashboard userOrderedTables={this.props.userOrderedTables} />} /> 
+                    <Route path='/dashboard' component={() => <Dashboard userOrderedTables={this.props.userOrderedTables}
+                                                                        user={this.props.user}
+                                                                        resetEditProfileForm = {this.props.resetEditProfileForm}
+                                                                        updateUserDetails={this.props.updateUserDetails} />} /> 
                     <Redirect to='/home' />
                 </Switch>
                 <TableOrder />

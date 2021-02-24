@@ -16,7 +16,10 @@ const Login = (state = {
             return {...state, user: action.payload};
         case ActionTypes.USER_FAILED:
             return {...state, user:null}
-        
+        case ActionTypes.UPDATE_USER_DETAILS_SUCCESS:
+            return {...state, errMsg: null, user:action.payload};
+        case ActionTypes.UPDATE_USER_DETAILS_FAILED:
+            return {...state, errMsg: action.payload}
         default:
             return state;
     }

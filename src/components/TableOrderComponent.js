@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-pascal-case */
 import React, {Component} from 'react';
 import {Modal, ModalBody, ModalHeader} from 'reactstrap';
-import {Form, Control, Errors} from 'react-redux-form';
+import {Form, Control} from 'react-redux-form';
 import baseUrl from '../redux/baseUrl';
 import axios from 'axios';
 

@@ -16,7 +16,8 @@ import {
     InitialSignup, 
     InitialReview, 
     InitialContact,
-    InitialOrderTable
+    InitialOrderTable,
+    InitialEditProfile
 } from './forms';
 import Tables from './tables';
 import UserOrderedTables from './userOrderedTables';
@@ -39,7 +40,8 @@ export const configureStore = () => {
             signup: InitialSignup,
             review: InitialReview,
             contact: InitialContact,
-            orderTable: InitialOrderTable
+            orderTable: InitialOrderTable,
+            editProfile: InitialEditProfile(Login.user)
         }) 
     }), applyMiddleware(thunk, logger));
     return store;

@@ -38,6 +38,7 @@ class Signup extends Component{
         formData.append('password', values.password);
         this.props.registerNewUser(formData);
         this.props.resetForm();
+        this.props.toggle();
     }
 
     check_password = (pass, pass1) => {

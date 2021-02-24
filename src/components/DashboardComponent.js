@@ -1,9 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUserCircle, faPhone, faMapMarker, faWallet} from '@fortawesome/fontawesome-free-solid';
 import { faMailBulk, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import EditProfile from './EditProfileComponent';
+import baseUrl from '../redux/baseUrl';
 
 const DashboardHeader = () => {
     return(
@@ -18,35 +19,49 @@ const DashboardHeader = () => {
     );
 }
 
-const UserInfo = () => {
+const UserInfo = (props) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    if (!props.user.user){
+        return (
+            <div></div>
+        );
+    }
     return(
         <div className="user-info row">
             <div className="avatar col-md-3 col-lg-3 text-center pt-4">
-                {/* <img src="{{user.custom_user.avatar.url}}" alt=""> */}
+                {props.user.avatar && 
+                <img src={baseUrl + props.user.user.avatar} alt=""></img>
+                }
+                {!props.user.avatar &&
                 <FontAwesomeIcon icon={faUserCircle} className="fa-10x"></FontAwesomeIcon>
+                }
             </div>
             <div className="info-content col-md-6 col-lg-6">
                 <div className="row">
-                    <h4 className="name col-md-12">Tukhtamurod Isroilov</h4>
+                    <h4 className="name col-md-12">{props.user.user.username}</h4>
                     <div className="col-md-6 col-sm-12">
                         <FontAwesomeIcon icon={faPhone}></FontAwesomeIcon> <strong>Phone Number:</strong><br /> 
-                        +998997779988
+                        {props.user.user.phone_number}
                     </div>
                     <div className="col-md-6 col-sm-12">
                         <FontAwesomeIcon icon={faMailBulk}></FontAwesomeIcon> <strong>Email:</strong><br />
-                        inha07111999@gmail.com
+                        {props.user.user.email}
                     </div>
                     <div className="col-sm-12">
                         <FontAwesomeIcon icon={faMapMarker}></FontAwesomeIcon> <strong>Address:</strong>
-                        Toshkent shahri, Yunusobod tumani, 17chi kvartal
+                        {props.user.user.address}
                     </div>
                 </div>
             </div>
             <div className="status-container col-md-3 col-sm-3">
                 <div className="row">
-                    <a className="btn btn-edit-profile col-12" data-toggle="modal" data-target="#editProfileWindow">
+                    <a onClick={() => setIsModalOpen(!isModalOpen)} className="btn btn-edit-profile col-12">
                         Edit profile
                     </a>
+                    <EditProfile isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)}
+                                user={props.user.user}
+                                resetEditProfileForm={props.resetEditProfileForm}
+                                updateUserDetails={props.updateUserDetails} />
                     <div className="col-12 status mt-2">
                         <div className="vaucher">
                             <h3 className="type text-center text-uppercase">
@@ -187,12 +202,13 @@ class Dashboard extends Component{
             <React.Fragment>
                 <DashboardHeader />
                 <div className="container">
-                    <UserInfo />
+                    <UserInfo user={this.props.user}
+                            resetEditProfileForm={this.props.resetEditProfileForm}
+                            updateUserDetails={this.props.updateUserDetails} />
                     <SectionStatistics />
                     <SectionActiveTableOrders orders={this.props.userOrderedTables} />
                     <SectionHistory />
                 </div>
-                <EditProfile />
             </React.Fragment>
         );
     }

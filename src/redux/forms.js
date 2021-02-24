@@ -10,6 +10,16 @@ export const InitialSignup = {
     avatar: "",
 }
 
+export const InitialEditProfile = (user) => ({
+    username: user.username,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    email: user.email,
+    address: user.address,
+    phone_number: user.phone_number,
+    avatar: "",
+})
+
 export const InitialReview = {
     content: ""
 }
