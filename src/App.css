@@ -564,6 +564,10 @@ footer img.right {
 }
 .order-list .item .quantity-form{
 	padding:0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgb(172, 255, 251);
 }
 .order-list .item .form-group{
 	margin:0 !important;

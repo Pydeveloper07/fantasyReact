@@ -174,6 +174,7 @@ export const authenticate = (username, password) => (dispatch) => {
             setTimeout(() => {
                 alert("Your session has expired!");
                 dispatch(logoutSuccess());
+                sessionStorage.clear();
             }, data.expiry_time);
             dispatch(authSuccess(data.user));
             dispatch(fetchUser());
@@ -210,6 +211,8 @@ export const logoutSuccess = () => ({
 
 export const logout = () => (dispatch) => {
     localStorage.removeItem('token');
+    sessionStorage.clear();
+    dispatch(initCart());
     dispatch(logoutSuccess());
 }
 
@@ -377,4 +380,56 @@ export const updateUserDetails = (formData) => (dispatch) => {
         .then((response) => response.data)
         .then((user) => dispatch(updateUserDetailsSuccess(user)))
         .catch((error) => dispatch(updateUserDetailsFailed(error.message)));
+}
+
+export const initCart = () => {
+    var totalCost = 0;
+    var numberOfItems = 0;
+    var items = [];
+    if (sessionStorage.getItem('cart')){
+        var cart = JSON.parse(sessionStorage.getItem('cart'));
+        if (cart.items && cart.items.length>0 && cart.totalCost && cart.numberOfItems){
+            totalCost = cart.totalCost;
+            numberOfItems = cart.numberOfItems;
+            items = cart.items;
+        }
+    }
+    else{
+        var cart = {
+            totalCost: totalCost,
+            numberOfItems: numberOfItems,
+            items: items
+        };
+        sessionStorage.setItem('cart', JSON.stringify(cart));
+    }
+    return {
+        type: ActionTypes.INIT_CART,
+        payload: JSON.parse(sessionStorage.getItem('cart'))
+    };
+}
+
+export const addToCart = (item) => {
+    var cart = JSON.parse(sessionStorage.getItem('cart'));
+    var isInTheCart = false;
+    for(var i=0; i<cart.items.length; i++){
+        if (cart.items[i].id === item.id){
+            cart.items[i].quantity = parseInt(cart.items[i].quantity) + parseInt(item.quantity);
+            isInTheCart = true;
+        }
+    }
+    if (!isInTheCart){
+        cart.items.push(item);
+    }
+    if (item.discount){
+        cart.totalCost += item.price*(1-item.discount/100)*item.quantity;
+    }
+    else{
+        cart.totalCost += item.price*item.quantity;
+    }
+    cart.numberOfItems = cart.items.length;
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    return {
+        type: ActionTypes.ADD_TO_CART,
+        payload: cart
+    }
 }

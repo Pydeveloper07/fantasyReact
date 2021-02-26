@@ -11,6 +11,7 @@ class Card extends Component {
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.calculateActualPrice = this.calculateActualPrice.bind(this);
+        this.handleBtnClick = this.handleBtnClick.bind(this);
     }
     handleInputChange(event){
         this.setState({itemAmount: event.target.value});
@@ -18,6 +19,18 @@ class Card extends Component {
 
     calculateActualPrice(actualPrice, discount){
         return actualPrice*(1 - discount/100);
+    }
+    handleBtnClick = (e) => {
+        var food = this.props.food;
+        var item = {
+            id: food.id,
+            name: food.name,
+            price: food.price,
+            discount: food.discount,
+            quantity: this.state.itemAmount,
+            image: food.image
+        }
+        this.props.addToCart(item);
     }
     render(){
         var discountRender = null;
@@ -56,10 +69,10 @@ class Card extends Component {
                     <div className="row bottom-row">
                         {priceRender}
                         <p className="col-md-6 text-right">
-                            <input type="number" name="quantity" onChange={this.state.handleInputChange} defaultValue={1} min='1' className="quantity" />
+                            <input type="number" name="quantity" onChange={this.handleInputChange} value={this.state.itemAmount} min='1' className="quantity" />
                         </p>
                     </div>
-                    <button className="btn order-btn">add to cart</button>
+                    <button className="btn order-btn" onClick={this.handleBtnClick}>add to cart</button>
                 </div>
             </div>
         );

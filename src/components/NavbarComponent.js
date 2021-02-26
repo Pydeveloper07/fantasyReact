@@ -7,6 +7,32 @@ import Signup from './SignupComponent';
 import Login from './LoginComponent';
 import ContactUs from './ContactUsComponent';
 import TableOrder from './TableOrderComponent';
+import baseUrl from '../redux/baseUrl';
+
+const CartItem = (props) => {
+    return(
+        <div className="cart-item">
+            <div className="row">
+                <div className="col-3 p-1">
+                    <img style={{width: '100%'}} src={baseUrl + props.item.image} alt="" />
+                </div>
+                <div className="col-9">
+                    <ul className="list-unstyled position-relative">
+                        <li className="name">
+                            {props.item.name}
+                        </li>
+                        <li className="quantity">
+                            Quantity: <span className="badge badge-primary">{props.item.quantity}</span>
+                        </li>
+                        <li className="badge badge-success price">
+                            {props.item.price}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 class Navbar extends Component{
     constructor(props){
@@ -32,6 +58,17 @@ class Navbar extends Component{
         this.setState({isOrderTableModalOpen: !this.state.isOrderTableModalOpen})
     }
     render(){
+        var cartItemList = [];
+        if (!this.props.cart.numberOfItems){
+            cartItemList.push(null);
+        }
+        else{
+            cartItemList = this.props.cart.items.map((item) => {
+                return(
+                    <CartItem item={item} />
+                )
+            })
+        }
         return(
             <nav className="navbar navbar-expand-lg custom-nav row wow fadeInDown">
                 <div className="container">
@@ -91,7 +128,7 @@ class Navbar extends Component{
                                         id="cardButton">
                                         <FontAwesomeIcon icon={faShoppingCart} aria-hidden="true"></FontAwesomeIcon>
                                         Cart
-                                        <span className="badge badge-pill badge-danger" id="cartNumberOfItems">0</span>
+                                        <span className="badge badge-pill badge-danger" id="cartNumberOfItems">{this.props.cart.numberOfItems}</span>
                                     </button>
                                     <div className="dropdown-menu" aria-labelledby="cardButton" id="cart">
                                         <div className="dropdown-item cart-view-header sticky-top">
@@ -100,38 +137,18 @@ class Navbar extends Component{
                                                     <span>Total Price:</span>
                                                 </div>
                                                 <div className="col-6 text-right">
-                                                    <span className="badge badge-danger" id="totalPrice">0</span>
+                                                    <span className="badge badge-danger" id="totalPrice">{this.props.cart.totalCost}</span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="dropdown-content dropdown-item">
                                             <div className="items">
                                                 <div className="cart-item">
-                                                    <div className="cart-item">
-                                                        <div className="row">
-                                                            <div className="col-3 p-1">
-                                                                <img style={{width: '100%'}} src="" alt="" />
-                                                            </div>
-                                                            <div className="col-9">
-                                                                <ul className="list-unstyled position-relative">
-                                                                    <li className="name">
-                                                                        
-                                                                    </li>
-                                                                    <li className="quantity">
-                                                                        Quantity: <span
-                                                                            className="badge badge-primary"></span>
-                                                                    </li>
-                                                                    <li className="badge badge-success price">
-                                                                        
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    {cartItemList}
                                                 </div>
                                             </div>
                                         </div>
-                                        <a href="food_ordering.html" className="btn btn-success order-btn">Order</a>
+                                        <Link to="/order" className="btn btn-success order-btn">Order</Link>
                                     </div>
                                 </div>
                             </li>

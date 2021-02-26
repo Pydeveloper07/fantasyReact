@@ -27,8 +27,11 @@ import {
     updateReview,
     postContactForm,
     fetchTables,
-    updateUserDetails} from '../redux/ActionCreators';
+    updateUserDetails,
+    initCart,
+    addToCart} from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
+import Order from './OrderComponent';
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -52,7 +55,9 @@ const mapDispatchToProps = (dispatch) => {
         updateReview: (formData) => dispatch(updateReview(formData)),
         postContactForm: (formData => dispatch(postContactForm(formData))),
         fetchTables: () => dispatch(fetchTables()),
-        updateUserDetails: (formData) => dispatch(updateUserDetails(formData))
+        updateUserDetails: (formData) => dispatch(updateUserDetails(formData)),
+        initCart: () => dispatch(initCart()),
+        addToCart: (item) => dispatch(addToCart(item))
     };
 }
 
@@ -69,7 +74,8 @@ const mapStateToProps = (store) => {
         user: store.user,
         userReview: store.userReview,
         tables: store.tables,
-        userOrderedTables: store.userOrderedTables
+        userOrderedTables: store.userOrderedTables, 
+        cart: store.cart
     };
 }
 
@@ -83,6 +89,7 @@ class Main extends Component {
         this.props.fetchReviews();
         this.props.fetchUserReview();
         this.props.fetchUser();
+        this.props.initCart();
     }
     render(){
         return(
@@ -97,7 +104,8 @@ class Main extends Component {
                         registerNewUser={this.props.registerNewUser}
                         postContactForm={this.props.postContactForm}
                         fetchTables={this.props.fetchTables}
-                        tables={this.props.tables} />
+                        tables={this.props.tables}
+                        cart={this.props.cart} />
                 <Switch>
                     <Route path='/home' component={() => <Home discountFoods={this.props.foods.foods.filter((food) => food.discount)} 
                                                             reviews={this.props.reviews.reviews} 
@@ -114,7 +122,8 @@ class Main extends Component {
                                                                     types={this.props.types.types} 
                                                                     errMsgTypes={this.props.types.errMsg}
                                                                     foods={this.props.foods.foods} 
-                                                                    errMsgFoods={this.props.foods.errMsg}/>}/>
+                                                                    errMsgFoods={this.props.foods.errMsg}
+                                                                    addToCart={this.props.addToCart} />}/>
                     <Route path='/menu/breakfast' component={() => <Breakfast foods={this.props.breakfast.foods} 
                                                                             errMsg={this.props.breakfast.errMsg} />} />    
                     <Route path='/menu/dinner' component={() => <Dinner foods={this.props.dinner.foods} 
@@ -127,6 +136,8 @@ class Main extends Component {
                                                                         user={this.props.user}
                                                                         resetEditProfileForm = {this.props.resetEditProfileForm}
                                                                         updateUserDetails={this.props.updateUserDetails} />} /> 
+                    <Route path='/order' component={() => <Order cart={this.props.cart}
+                                                                user={this.props.user} />} />
                     <Redirect to='/home' />
                 </Switch>
                 <TableOrder />
