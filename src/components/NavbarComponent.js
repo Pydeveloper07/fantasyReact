@@ -14,7 +14,7 @@ const CartItem = (props) => {
         <div className="cart-item">
             <div className="row">
                 <div className="col-3 p-1">
-                    <img style={{width: '100%'}} src={baseUrl + props.item.image} alt="" />
+                    <img src={baseUrl + props.item.image} alt="" />
                 </div>
                 <div className="col-9">
                     <ul className="list-unstyled position-relative">
@@ -25,7 +25,7 @@ const CartItem = (props) => {
                             Quantity: <span className="badge badge-primary">{props.item.quantity}</span>
                         </li>
                         <li className="badge badge-success price">
-                            {props.item.price}
+                            {props.item.price*(1-props.item.discount/100)}
                         </li>
                     </ul>
                 </div>

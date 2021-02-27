@@ -29,7 +29,8 @@ import {
     fetchTables,
     updateUserDetails,
     initCart,
-    addToCart} from '../redux/ActionCreators';
+    addToCart,
+    removeCartItem} from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 import Order from './OrderComponent';
 
@@ -57,7 +58,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchTables: () => dispatch(fetchTables()),
         updateUserDetails: (formData) => dispatch(updateUserDetails(formData)),
         initCart: () => dispatch(initCart()),
-        addToCart: (item) => dispatch(addToCart(item))
+        addToCart: (item) => dispatch(addToCart(item)),
+        removeCartItem: (id) => dispatch(removeCartItem(id))
     };
 }
 
@@ -137,7 +139,8 @@ class Main extends Component {
                                                                         resetEditProfileForm = {this.props.resetEditProfileForm}
                                                                         updateUserDetails={this.props.updateUserDetails} />} /> 
                     <Route path='/order' component={() => <Order cart={this.props.cart}
-                                                                user={this.props.user} />} />
+                                                                user={this.props.user}
+                                                                removeCartItem={this.props.removeCartItem} />} />
                     <Redirect to='/home' />
                 </Switch>
                 <TableOrder />

@@ -54,3 +54,5 @@ export const UPDATE_USER_DETAILS_FAILED = 'UPDATE_USER_DETAILS_FAILED';
 
 export const INIT_CART = 'INIT_CART';
 export const ADD_TO_CART = 'ADD_TO_CART';
+
+export const REMOVE_CART_ITEM = 'REMOVE_CART_ITEM';

@@ -63,6 +63,10 @@ html{
 	width: 400px;
 	max-height: 60vh;
 	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.custom-nav .dropdown-menu::-webkit-scrollbar{
+	display:none;
 }
 /* Cart */
 .dropdown-menu .cart-view-header {
@@ -76,11 +80,16 @@ html{
 	border-top: 1px solid black;
 	padding: 0.3em 0 0.3em 0;
 }
+.dropdown-menu .cart-item img{
+	width: 75px;
+	height: 75px;
+}
 
 .dropdown-menu .cart-item .name {
 	font-weight: bold;
 	color: rgb(70, 70, 252);
 	font-size: 1.3em;
+	white-space:normal;
 }
 .custom-nav .dropdown-item.active,
 .dropdown-item:active{
@@ -622,9 +631,6 @@ footer img.right {
 	right:50%;
 	transition: right 0.5s, opacity 0.5s;
 	opacity: 0;
-}
-.order-details .edit-address-block, .order-details .edit-phone-block{
-	display:none;
 }
 
 /* USER DASHBOARD */

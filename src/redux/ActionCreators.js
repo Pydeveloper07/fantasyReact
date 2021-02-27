@@ -433,3 +433,19 @@ export const addToCart = (item) => {
         payload: cart
     }
 }
+
+export const removeCartItem = (id) => (dispatch) => {
+    var cart = JSON.parse(sessionStorage.getItem('cart'));
+    var item = cart.items.filter((item) => item.id === id)[0];
+    var updatedCartItems = cart.items.filter((item) => item.id !== id);
+    cart.items = updatedCartItems;
+    cart.numberOfItems -= 1;
+    if (item.discount){
+        cart.totalCost -= parseInt(item.quantity)*item.price*(1-item.discount/100);
+    }
+    else{
+        cart.totalCost -= parseInt(item.quantity)*item.price;
+    }
+    sessionStorage.setItem('cart', JSON.stringify(cart));
+    dispatch(initCart());
+}

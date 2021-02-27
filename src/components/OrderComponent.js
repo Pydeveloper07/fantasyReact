@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faTrashAlt} from '@fortawesome/fontawesome-free-solid';
 import baseUrl from '../redux/baseUrl';
-import { faMapMarkerAlt, faMoneyBillWave, faPhoneAlt, faStarHalfAlt, faTruck } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faMapMarkerAlt, faMoneyBillWave, faPencilAlt, faPhoneAlt, faStarHalfAlt, faTruck } from '@fortawesome/free-solid-svg-icons';
+
+const phone_number_vld = (val) => /^(\+998){1}[0-9]{9}$/.test(val);
 
 const SectionHeader = (props) => {
     return(
@@ -27,9 +29,9 @@ const RenderItem = (props) => {
                 </div>
                 <div className="col-md-8 item-content">
                     <div className="row">
-                        <h5 className="col-md-8 col-lg-8 name">{props.item.name}</h5>
-                        <div className="col-md-4 col-lg-4 text-right">
-                            <span className="badge badge-danger price p-2">{props.item.price}</span>
+                        <h5 className="col-md-9 col-lg-9 name">{props.item.name}</h5>
+                        <div className="col-md-3 col-lg-3 text-right">
+                            <span className="badge badge-danger price p-2">{props.item.price*(1-props.item.discount/100)}</span>
                         </div>
                     </div>
                 </div>
@@ -38,7 +40,7 @@ const RenderItem = (props) => {
                         <div className="col-md-6 col-lg-6 quantity-form">
                             <span style={{fontWeight: 'bold', fontSize: '1.2em'}}>{props.item.quantity}</span>
                         </div>
-                        <button className="btn btn-danger flex-grow-1 col-md-6 col-lg-6" id="removeItem">
+                        <button className="btn btn-danger flex-grow-1 col-md-6 col-lg-6" id="removeItem" onClick={() => props.removeCartItem(props.item.id)}>
                             <FontAwesomeIcon icon={faTrashAlt} />
                         </button>
                     </div>
@@ -56,7 +58,7 @@ const OrderList = (props) => {
     else{
         itemList = props.cart.items.map((item) => {
             return (
-                <RenderItem key={item.id} item={item} />
+                <RenderItem key={item.id} item={item} removeCartItem={props.removeCartItem} />
             );
         })
     }
@@ -70,6 +72,25 @@ const OrderList = (props) => {
 }
 
 class OrderDetails extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            phone_number: this.props.user.user?this.props.user.user.phone_number:'',
+            phone_number_err: "",
+            address: this.props.user.user?this.props.user.user.address:'',
+            isPhoneInputOpen: false,
+            isAddressInputOpen: false
+        }
+        this.handlePhoneBtnClick = this.handlePhoneBtnClick.bind(this);
+    }
+    handlePhoneBtnClick = () => {
+        if (phone_number_vld(this.state.phone_number)){
+            this.setState({isPhoneInputOpen: false, phone_number_err: ""})
+            return;
+        }
+        this.setState({phone_number_err: "Correct form: +998xxxxxxxxx"})
+        return;
+    }
     render(){
         if (!this.props.user.user){
             return (
@@ -103,25 +124,45 @@ class OrderDetails extends Component{
                             <p className="col-md-6">
                                 <FontAwesomeIcon icon={faPhoneAlt}/>Contact-number:
                             </p>
-                            <p className="col-md-6 text-right phone-content">
-                                {/* <button className="btn btn-info edit-phone-btn"><i className="fas fa-pencil-alt"></i></button> */}
-                                <span>{this.props.user.user.phone_number}</span>
+                            {!this.state.isPhoneInputOpen &&
+                            <p className="col-md-6 text-right phone-content"
+                                onMouseEnter={() => document.getElementsByClassName('edit-phone-btn')[0].setAttribute('style', 'right: 10px; opacity: 1')}
+                                onMouseLeave={() => document.getElementsByClassName('edit-phone-btn')[0].setAttribute('style', 'right: 50%; opacity:0')}>
+                                <button className="btn btn-info edit-phone-btn" onClick={() => this.setState({isPhoneInputOpen: true})}><FontAwesomeIcon icon={faPencilAlt} /></button>
+                                <span>{this.state.phone_number}</span>
                             </p>
-                            {/* <p className="col-md-6 text-center edit-phone-block">
-                                <input className="form-control" type="text" name="phoneNumber" />
-                            </p> */}
+                            }
+                            {this.state.isPhoneInputOpen &&
+                            <p className="col-md-6 text-center edit-phone-block row">
+                                <input className="form-control col-9" type="text" defaultValue={this.state.phone_number}
+                                    onChange={(e) => this.setState({phone_number: e.target.value})} name="phoneNumber" />
+                                <button className="btn btn-success ml-1"><FontAwesomeIcon icon={faCheck}
+                                    onClick={this.handlePhoneBtnClick} /></button>
+                                <small className="text-danger">{this.state.phone_number_err}</small>
+                            </p>
+                            }
                         </div>
                         <div className="address row">
                             <p className="col-md-6 col-lg-6">
                                 <FontAwesomeIcon icon={faMapMarkerAlt} />Address:
                             </p>
-                            <p className="col-md-6 col-lg-6 text-right address-content">
-                                {/* <button className="btn btn-info edit-add-btn"><i className="fas fa-pencil-alt"></i></button> */}
-                                <span>{this.props.user.user.address}</span>
+                            {!this.state.isAddressInputOpen &&
+                            <p className="col-md-6 col-lg-6 text-right address-content"
+                                onMouseEnter={() => document.getElementsByClassName('edit-add-btn')[0].setAttribute('style', 'right: 10px; opacity: 1')}
+                                onMouseLeave={() => document.getElementsByClassName('edit-add-btn')[0].setAttribute('style', 'right: 50%; opacity:0')}>
+                                <button className="btn btn-info edit-add-btn" onClick={() => this.setState({isAddressInputOpen: true})}><FontAwesomeIcon icon={faPencilAlt}/></button>
+                                <span>{this.state.address}</span>
                             </p>
-                            {/* <p className="col-md-6 col-lg-6 edit-address-block text-center">
-                                <input className="form-control" type="text" name="address" />
-                            </p> */}
+                            }
+                            {this.state.isAddressInputOpen &&
+                            <p className="col-md-6 col-lg-6 edit-address-block text-center row">
+                                <input className="form-control col-9" type="text" defaultValue={this.state.address}
+                                    onChange={(e) => this.setState({address: e.target.value})} name="address" />
+                                <button className="btn btn-success ml-1"><FontAwesomeIcon icon={faCheck}
+                                    onClick={() => this.setState({isAddressInputOpen: false})} /></button>
+                            </p>
+                            }
+                            
                         </div>
                         <div className="client-status row">
                             <p className="col-md-6">
@@ -155,7 +196,7 @@ class Order extends Component{
             <React.Fragment>
                 <SectionHeader />
                 <div className="order-content row">
-                    <OrderList cart={this.props.cart} />
+                    <OrderList cart={this.props.cart} removeCartItem={this.props.removeCartItem} />
                     <OrderDetails user={this.props.user} cart={this.props.cart} />
                 </div>
             </React.Fragment>
