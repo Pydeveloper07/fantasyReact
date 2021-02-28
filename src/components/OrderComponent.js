@@ -82,6 +82,7 @@ class OrderDetails extends Component{
             isAddressInputOpen: false
         }
         this.handlePhoneBtnClick = this.handlePhoneBtnClick.bind(this);
+        this.handleOrderBtnClick = this.handleOrderBtnClick.bind(this);
     }
     handlePhoneBtnClick = () => {
         if (phone_number_vld(this.state.phone_number)){
@@ -91,6 +92,25 @@ class OrderDetails extends Component{
         this.setState({phone_number_err: "Correct form: +998xxxxxxxxx"})
         return;
     }
+
+    handleOrderBtnClick = () => {
+        if (!this.state.address){
+            return;
+        }
+        let itemList = [];
+        let quantityList = [];
+        let formData = new FormData();
+        for (var i=0; i<this.props.cart.items.length; i++){
+            itemList.push(this.props.cart.items[i].id);
+            quantityList.push(parseInt(this.props.cart.items[i].quantity));
+        }
+        formData.append('item_list', itemList);
+        formData.append('quantity_list', quantityList);
+        formData.append('price', this.props.cart.totalCost);
+        formData.append('delivery_fee', this.props.cart.totalCost*0.1);
+        this.props.postCart(formData);
+    }
+
     render(){
         if (!this.props.user.user){
             return (
@@ -180,7 +200,7 @@ class OrderDetails extends Component{
                                 {totalCost}
                             </p>
                         </div>
-                        <button className="order-btn">
+                        <button className="order-btn" onClick={this.handleOrderBtnClick}>
                             Order
                         </button>
                     </div>
@@ -197,7 +217,7 @@ class Order extends Component{
                 <SectionHeader />
                 <div className="order-content row">
                     <OrderList cart={this.props.cart} removeCartItem={this.props.removeCartItem} />
-                    <OrderDetails user={this.props.user} cart={this.props.cart} />
+                    <OrderDetails user={this.props.user} cart={this.props.cart} postCart={this.props.postCart} />
                 </div>
             </React.Fragment>
         );

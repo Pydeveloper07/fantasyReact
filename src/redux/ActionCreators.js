@@ -180,6 +180,7 @@ export const authenticate = (username, password) => (dispatch) => {
             dispatch(fetchUser());
             dispatch(fetchUserReview());
             dispatch(fetchUserTables());
+            dispatch(fetchUserOrderHistory());
         })
         .catch((error) => dispatch(authFailure("Incorrect login credentials!")));
 }
@@ -448,4 +449,45 @@ export const removeCartItem = (id) => (dispatch) => {
     }
     sessionStorage.setItem('cart', JSON.stringify(cart));
     dispatch(initCart());
+}
+
+export const addOrderItemToHistory = (orderItem) => ({
+    type: ActionTypes.ADD_ORDER_ITEM_TO_HISTORY,
+    payload: orderItem
+})
+
+export const postCart = (formData) => (dispatch) => {
+    return axios.post(baseUrl + '/api/pages/order/', formData, {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        })
+        .then((response) => response.data)
+        .then((orderItem) => {
+            sessionStorage.removeItem('cart');
+            dispatch(initCart());
+            dispatch(addOrderItemToHistory(orderItem));
+        })
+        .catch((error) => console.log(error.message));
+}
+
+export const userOrderHistorySuccess = (orders) => ({
+    type: ActionTypes.USER_ORDER_HISTORY_SUCCESS,
+    payload: orders
+})
+
+export const userOrderHistoryFailed = (errMsg) => ({
+    type: ActionTypes.USER_ORDER_HISTORY_FAILED,
+    payload: errMsg
+})
+
+export const fetchUserOrderHistory = () => (dispatch) => {
+    return axios.get(baseUrl + '/api/pages/user-order-history/', {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        })
+        .then((response) => response.data)
+        .then((orders) => dispatch(userOrderHistorySuccess(orders)))
+        .catch((error) => dispatch(userOrderHistoryFailed(error.message)));
 }

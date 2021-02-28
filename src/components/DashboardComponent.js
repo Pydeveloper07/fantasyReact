@@ -105,36 +105,35 @@ const SectionStatistics = () => {
     );
 }
 
-const RenderOrderItem = () => {
+const RenderOrderItem = (props) => {
     return(
         <div className="item row">
             <div className="col-1">
-                <span className="badge badge-secondary">1.</span>
+                <span className="badge badge-secondary">{props.item.id + 1}.</span>
             </div>
             <div className="col-10">
                 <p className="item-name">
-                    Manti
+                    {props.item.name}
                 </p>
             </div>
             <div className="col-1">
-                <span className="badge badge-primary">5</span>
+                <span className="badge badge-primary">{props.item.quantity}</span>
             </div>
         </div>
     );
 }
 
 const RenderOrder = (props) => {
-    var orders = ['Manti', 'Shashlik', 'Pizza'];
-    var orderItemsList = orders.map((order) => {
+    var orderItemsList = props.order.items.map((item) => {
         return(
-            <RenderOrderItem name={order} />
+            <RenderOrderItem key={item.id} item={item} />
         );
     });
     return(
         <div className="order-block row mb-3">
             <div className="col-3">
                 <div className="order-name text-center">
-                    <span>№{props.orderNumber}</span>
+                    <span>№{props.order.id + 1}</span>
                 </div>
             </div>
             <div className="col-6">
@@ -144,14 +143,15 @@ const RenderOrder = (props) => {
                 <div className="col-12 text-center">
                     <div className="summary">
                         <p>
-                            Total cost(+delivery fee): <span class="badge badge-success">250,000</span>
+                            Total cost(+delivery fee): <span className="badge badge-success">{props.order.totalCost}</span>
                         </p>
                     </div>
                 </div>
             </div>
             <div className="col-3">
                 <div className="date-block text-center">
-                    <span>28/10/2019</span>
+                    <span>{props.order.created_date.substr(0, 10)}</span>
+                    <span>{props.order.created_date.substr(11, 5)}</span>
                 </div>
             </div>
         </div>
@@ -176,11 +176,15 @@ const SectionActiveTableOrders = (props) => {
     );
 }
 
-const SectionHistory = () => {
-    var arr = [1, 2, 3];
-    var orderList = arr.map((value) => {
+const SectionHistory = (props) => {
+    if (props.orderHistory.orders.length === 0){
+        return (
+            <div></div>
+        );
+    }
+    var orderList = props.orderHistory.orders.map((order) => {
         return(
-            <RenderOrder key={value} orderNumber={value} />
+            <RenderOrder key={order.id} order={order} />
         );
     });
     return(
@@ -196,7 +200,7 @@ const SectionHistory = () => {
     );
 }
 
-class Dashboard extends Component{
+class Dashboard extends Component{ 
     render(){
         return(
             <React.Fragment>
@@ -207,7 +211,7 @@ class Dashboard extends Component{
                             updateUserDetails={this.props.updateUserDetails} />
                     <SectionStatistics />
                     <SectionActiveTableOrders orders={this.props.userOrderedTables} />
-                    <SectionHistory />
+                    <SectionHistory orderHistory={this.props.orderHistory} />
                 </div>
             </React.Fragment>
         );

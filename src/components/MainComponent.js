@@ -30,7 +30,9 @@ import {
     updateUserDetails,
     initCart,
     addToCart,
-    removeCartItem} from '../redux/ActionCreators';
+    removeCartItem,
+    postCart,
+    fetchUserOrderHistory} from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 import Order from './OrderComponent';
 
@@ -59,7 +61,9 @@ const mapDispatchToProps = (dispatch) => {
         updateUserDetails: (formData) => dispatch(updateUserDetails(formData)),
         initCart: () => dispatch(initCart()),
         addToCart: (item) => dispatch(addToCart(item)),
-        removeCartItem: (id) => dispatch(removeCartItem(id))
+        removeCartItem: (id) => dispatch(removeCartItem(id)),
+        postCart : (formData) => dispatch(postCart(formData)),
+        fetchUserOrderHistory: () => dispatch(fetchUserOrderHistory())
     };
 }
 
@@ -77,7 +81,8 @@ const mapStateToProps = (store) => {
         userReview: store.userReview,
         tables: store.tables,
         userOrderedTables: store.userOrderedTables, 
-        cart: store.cart
+        cart: store.cart,
+        orderHistory: store.orderHistory
     };
 }
 
@@ -92,6 +97,7 @@ class Main extends Component {
         this.props.fetchUserReview();
         this.props.fetchUser();
         this.props.initCart();
+        this.props.fetchUserOrderHistory();
     }
     render(){
         return(
@@ -136,11 +142,13 @@ class Main extends Component {
                                                                     errMsg={this.props.drinks.errMsg} />} />
                     <Route path='/dashboard' component={() => <Dashboard userOrderedTables={this.props.userOrderedTables}
                                                                         user={this.props.user}
-                                                                        resetEditProfileForm = {this.props.resetEditProfileForm}
-                                                                        updateUserDetails={this.props.updateUserDetails} />} /> 
+                                                                        resetEditProfileForm={this.props.resetEditProfileForm}
+                                                                        updateUserDetails={this.props.updateUserDetails}
+                                                                        orderHistory={this.props.orderHistory} />} /> 
                     <Route path='/order' component={() => <Order cart={this.props.cart}
                                                                 user={this.props.user}
-                                                                removeCartItem={this.props.removeCartItem} />} />
+                                                                removeCartItem={this.props.removeCartItem}
+                                                                postCart={this.props.postCart} />} />
                     <Redirect to='/home' />
                 </Switch>
                 <TableOrder />
