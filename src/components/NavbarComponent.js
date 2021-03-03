@@ -89,7 +89,8 @@ class Navbar extends Component{
                                     toggle={this.toggleOrderTable}
                                     isLoggedIn={this.props.isLoggedIn}
                                     resetForm={this.props.resetOrderTableForm}
-                                    tables={this.props.tables} />
+                                    tables={this.props.tables}
+                                    addOrderedTable={this.props.addOrderedTable} />
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" onClick={this.toggleContact}>Contact Us</a>

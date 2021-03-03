@@ -88,8 +88,8 @@ const SectionStatistics = (props) => {
     return(
         <section className="statistics">
             <div className="row">
-                <div className="col-md-3 col-sm-12"></div>
-                <div className="col-md-3 col-sm-12">
+                <div className="col-md-2 col-sm-12"></div>
+                <div className="col-md-4 col-sm-12">
                     <div className="item" id="total-orders">
                         <h2 className="value text-left">
                             <CountTo from={0} to={props.userStatus && props.userStatus.total_orders} speed={1000} />
@@ -98,7 +98,7 @@ const SectionStatistics = (props) => {
                         <FontAwesomeIcon icon={faShoppingCart} className="fa-3x custom-i"></FontAwesomeIcon>
                     </div>
                 </div>
-                <div className="col-md-3 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                     <div className="item" id="total-expenses">
                         <h2 className="value text-left">
                             <CountTo from={0} to={props.userStatus && props.userStatus.total_expenses} speed={2000} />
@@ -107,7 +107,7 @@ const SectionStatistics = (props) => {
                         <FontAwesomeIcon icon={faWallet} className="fa-3x custom-i"></FontAwesomeIcon>
                     </div>
                 </div>
-                <div className="col-md-3 col-sm-12"></div>
+                <div className="col-md-2 col-sm-12"></div>
             </div>
         </section>
     );
@@ -166,9 +166,9 @@ const RenderOrder = (props) => {
     );
 }
 const SectionActiveTableOrders = (props) => {
-    const orderList = props.orders.tables.length > 0?props.orders.tables.map((table) => {
+    const orderList = props.orders.tables.length > 0?props.orders.tables.map((table, index) => {
         return (
-            <h3 key={table.id} className="text-success">{table.id}. {table.start_time.substr(0, 5)} - {table.end_time.substr(0, 5)}</h3>
+            <h4 key={table.id} className="text-success col-4"><span className="text-danger">{index+1}. Table#{table.id}</span> {table.start_time.substr(0, 5)} - {table.end_time.substr(0, 5)}</h4>
         );
     }):null;
     return (

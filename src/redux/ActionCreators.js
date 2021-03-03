@@ -515,3 +515,8 @@ export const fetchUserStatus = () => (dispatch) => {
         .then((status) => dispatch(userStatusSuccess(status)))
         .catch((error) => dispatch(userStatusFailed(error.message)));
 }
+
+export const addOrderedTable = (table) => ({
+    type: ActionTypes.ADD_ORDERED_TABLE,
+    payload: table
+})

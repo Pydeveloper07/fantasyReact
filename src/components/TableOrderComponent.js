@@ -86,6 +86,7 @@ class TableOrder extends Component{
                 this.props.resetForm();
                 this.refreshState();
                 this.props.toggle();
+                this.props.addOrderedTable(data.table);
             }
         })
         .catch((error) => console.log(error.message));

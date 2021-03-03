@@ -33,7 +33,9 @@ import {
     removeCartItem,
     postCart,
     fetchUserOrderHistory,
-    fetchUserStatus} from '../redux/ActionCreators';
+    fetchUserStatus,
+    fetchUserTables,
+    addOrderedTable} from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 import Order from './OrderComponent';
 
@@ -59,6 +61,7 @@ const mapDispatchToProps = (dispatch) => {
         updateReview: (formData) => dispatch(updateReview(formData)),
         postContactForm: (formData => dispatch(postContactForm(formData))),
         fetchTables: () => dispatch(fetchTables()),
+        addOrderedTable: (table) => dispatch(addOrderedTable(table)),
         updateUserDetails: (formData) => dispatch(updateUserDetails(formData)),
         initCart: () => dispatch(initCart()),
         addToCart: (item) => dispatch(addToCart(item)),
@@ -66,6 +69,7 @@ const mapDispatchToProps = (dispatch) => {
         postCart : (formData) => dispatch(postCart(formData)),
         fetchUserOrderHistory: () => dispatch(fetchUserOrderHistory()),
         fetchUserStatus: () => dispatch(fetchUserStatus()),
+        fetchUserTables: () => dispatch(fetchUserTables())
     };
 }
 
@@ -102,6 +106,7 @@ class Main extends Component {
         this.props.initCart();
         this.props.fetchUserOrderHistory();
         this.props.fetchUserStatus();
+        this.props.fetchUserTables();
     }
     render(){
         return(
@@ -117,7 +122,8 @@ class Main extends Component {
                         postContactForm={this.props.postContactForm}
                         fetchTables={this.props.fetchTables}
                         tables={this.props.tables}
-                        cart={this.props.cart} />
+                        cart={this.props.cart}
+                        addOrderedTable={this.props.addOrderedTable} />
                 <Switch>
                     <Route path='/home' component={() => <Home discountFoods={this.props.foods.foods.filter((food) => food.discount)} 
                                                             reviews={this.props.reviews.reviews} 
