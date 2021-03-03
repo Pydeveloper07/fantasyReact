@@ -21,6 +21,10 @@ class Card extends Component {
         return actualPrice*(1 - discount/100);
     }
     handleBtnClick = (e) => {
+        if (!this.props.isLoggedIn){
+            alert("You need to login!");
+            return;
+        }
         var food = this.props.food;
         var item = {
             id: food.id,

@@ -1,0 +1,12 @@
+import * as ActionTypes from './ActionTypes';
+
+const UserStatus = (state=null, action) => {
+    switch(action.type){
+        case ActionTypes.USER_STATUS_SUCCESS:
+            return action.payload;
+        default:
+            return state;
+    }
+}
+
+export default UserStatus;

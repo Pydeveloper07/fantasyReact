@@ -37,7 +37,7 @@ class Listings extends Component{
                 return(
                     <div className="col-md-4 col-lg-4 col-sm-6 col-xs-12" key={food.id}>
                         <div className="item">
-                            <Card food={food}/>
+                            <Card food={food} addToCart={this.props.addToCart} isLoggedIn={this.props.isLoggedIn}/>
                         </div>
                     </div>
                 );

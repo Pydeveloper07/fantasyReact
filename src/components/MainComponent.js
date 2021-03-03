@@ -32,7 +32,8 @@ import {
     addToCart,
     removeCartItem,
     postCart,
-    fetchUserOrderHistory} from '../redux/ActionCreators';
+    fetchUserOrderHistory,
+    fetchUserStatus} from '../redux/ActionCreators';
 import {actions} from 'react-redux-form';
 import Order from './OrderComponent';
 
@@ -63,7 +64,8 @@ const mapDispatchToProps = (dispatch) => {
         addToCart: (item) => dispatch(addToCart(item)),
         removeCartItem: (id) => dispatch(removeCartItem(id)),
         postCart : (formData) => dispatch(postCart(formData)),
-        fetchUserOrderHistory: () => dispatch(fetchUserOrderHistory())
+        fetchUserOrderHistory: () => dispatch(fetchUserOrderHistory()),
+        fetchUserStatus: () => dispatch(fetchUserStatus()),
     };
 }
 
@@ -82,7 +84,8 @@ const mapStateToProps = (store) => {
         tables: store.tables,
         userOrderedTables: store.userOrderedTables, 
         cart: store.cart,
-        orderHistory: store.orderHistory
+        orderHistory: store.orderHistory,
+        userStatus: store.userStatus
     };
 }
 
@@ -98,6 +101,7 @@ class Main extends Component {
         this.props.fetchUser();
         this.props.initCart();
         this.props.fetchUserOrderHistory();
+        this.props.fetchUserStatus();
     }
     render(){
         return(
@@ -124,32 +128,44 @@ class Main extends Component {
                                                             userReview={this.props.userReview} 
                                                             resetReviewForm={this.props.resetReviewForm}
                                                             addReview={this.props.addReview}
-                                                            updateReview={this.props.updateReview} />} />
+                                                            updateReview={this.props.updateReview}
+                                                            addToCart={this.props.addToCart}  />} />
                     <Route exact path='/menu' component={() => <Menu cuisines={this.props.cuisines.cuisines} 
                                                                     errMsgCuisines={this.props.cuisines.errMsg}
                                                                     types={this.props.types.types} 
                                                                     errMsgTypes={this.props.types.errMsg}
                                                                     foods={this.props.foods.foods} 
                                                                     errMsgFoods={this.props.foods.errMsg}
-                                                                    addToCart={this.props.addToCart} />}/>
+                                                                    addToCart={this.props.addToCart}
+                                                                    isLoggedIn={this.props.user.isLoggedIn} />}/>
                     <Route path='/menu/breakfast' component={() => <Breakfast foods={this.props.breakfast.foods} 
-                                                                            errMsg={this.props.breakfast.errMsg} />} />    
+                                                                            errMsg={this.props.breakfast.errMsg}
+                                                                            addToCart={this.props.addToCart}
+                                                                            isLoggedIn={this.props.user.isLoggedIn} />} />    
                     <Route path='/menu/dinner' component={() => <Dinner foods={this.props.dinner.foods} 
-                                                                        errMsg={this.props.dinner.errMsg} />} />   
+                                                                        errMsg={this.props.dinner.errMsg}
+                                                                        addToCart={this.props.addToCart}
+                                                                        isLoggedIn={this.props.user.isLoggedIn} />} />   
                     <Route path='/menu/supper' component={() => <Supper foods={this.props.supper.foods} 
-                                                                        errMsg={this.props.supper.errMsg} />} />                                     
+                                                                        errMsg={this.props.supper.errMsg}
+                                                                        addToCart={this.props.addToCart}
+                                                                        isLoggedIn={this.props.user.isLoggedIn} />} />                                     
                     <Route path='/drinks' component={() => <Drinks drinks={this.props.drinks.drinks} 
-                                                                    errMsg={this.props.drinks.errMsg} />} />
+                                                                    errMsg={this.props.drinks.errMsg}
+                                                                    addToCart={this.props.addToCart}
+                                                                    isLoggedIn={this.props.user.isLoggedIn} />} />
                     <Route path='/dashboard' component={() => <Dashboard userOrderedTables={this.props.userOrderedTables}
                                                                         user={this.props.user}
                                                                         resetEditProfileForm={this.props.resetEditProfileForm}
                                                                         updateUserDetails={this.props.updateUserDetails}
-                                                                        orderHistory={this.props.orderHistory} />} /> 
+                                                                        orderHistory={this.props.orderHistory}
+                                                                        userStatus={this.props.userStatus} />} /> 
                     <Route path='/order' component={() => <Order cart={this.props.cart}
                                                                 user={this.props.user}
                                                                 removeCartItem={this.props.removeCartItem}
-                                                                postCart={this.props.postCart} />} />
-                    <Redirect to='/home' />
+                                                                postCart={this.props.postCart}
+                                                                userStatus={this.props.userStatus} />} />
+                    <Redirect to='/home'/>
                 </Switch>
                 <TableOrder />
                 <Footer />

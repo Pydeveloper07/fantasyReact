@@ -3,7 +3,9 @@ import Listings from './ListingsComponent';
 
 const Drinks = (props) => {
     return(
-        <Listings type={'Drinks'} foods={props.drinks} errMsg={props.errMsg}/>
+        <Listings type={'Drinks'} foods={props.drinks} errMsg={props.errMsg}
+            addToCart={props.addToCart}
+            isLoggedIn={props.isLoggedIn} />
     );
 }
 

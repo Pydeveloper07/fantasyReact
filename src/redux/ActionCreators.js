@@ -181,6 +181,8 @@ export const authenticate = (username, password) => (dispatch) => {
             dispatch(fetchUserReview());
             dispatch(fetchUserTables());
             dispatch(fetchUserOrderHistory());
+            dispatch(fetchUserStatus());
+            dispatch(initCart());
         })
         .catch((error) => dispatch(authFailure("Incorrect login credentials!")));
 }
@@ -467,6 +469,7 @@ export const postCart = (formData) => (dispatch) => {
             sessionStorage.removeItem('cart');
             dispatch(initCart());
             dispatch(addOrderItemToHistory(orderItem));
+            dispatch(fetchUserStatus());
         })
         .catch((error) => console.log(error.message));
 }
@@ -490,4 +493,25 @@ export const fetchUserOrderHistory = () => (dispatch) => {
         .then((response) => response.data)
         .then((orders) => dispatch(userOrderHistorySuccess(orders)))
         .catch((error) => dispatch(userOrderHistoryFailed(error.message)));
+}
+
+export const userStatusSuccess = (status) => ({
+    type: ActionTypes.USER_STATUS_SUCCESS,
+    payload: status
+})
+
+export const userStatusFailed = (errMsg) => ({
+    type: ActionTypes.USER_STATUS_FAILED,
+    payload: errMsg
+})
+
+export const fetchUserStatus = () => (dispatch) => {
+    return axios.get(baseUrl + '/api/accounts/user-status/', {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        })
+        .then((response) => response.data)
+        .then((status) => dispatch(userStatusSuccess(status)))
+        .catch((error) => dispatch(userStatusFailed(error.message)));
 }

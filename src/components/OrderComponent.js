@@ -106,7 +106,7 @@ class OrderDetails extends Component{
         }
         formData.append('item_list', itemList);
         formData.append('quantity_list', quantityList);
-        formData.append('price', this.props.cart.totalCost);
+        formData.append('price', this.props.cart.totalCost*(1 - this.props.userStatus.status_bonus/100));
         formData.append('delivery_fee', this.props.cart.totalCost*0.1);
         this.props.postCart(formData);
     }
@@ -118,7 +118,7 @@ class OrderDetails extends Component{
             );
         }
         const deliveryFee = this.props.cart.totalCost/10;
-        const totalCost = this.props.cart.totalCost + deliveryFee;
+        const totalCost = this.props.cart.totalCost*(1 - this.props.userStatus.status_bonus/100) + deliveryFee;
         return(
             <div className="col-md-4 col-lg-4 col-sm-12 order-details">
                 <div className="order-card">
@@ -189,7 +189,7 @@ class OrderDetails extends Component{
                                 <FontAwesomeIcon icon={faStarHalfAlt} />Client status:
                             </p>
                             <p className="col-md-6 text-right">
-                                None (0% off)
+                                {this.props.userStatus.status} ({this.props.userStatus.status_bonus}% off)
                             </p>
                         </div>
                         <div className="total-price row">
@@ -217,7 +217,10 @@ class Order extends Component{
                 <SectionHeader />
                 <div className="order-content row">
                     <OrderList cart={this.props.cart} removeCartItem={this.props.removeCartItem} />
-                    <OrderDetails user={this.props.user} cart={this.props.cart} postCart={this.props.postCart} />
+                    <OrderDetails user={this.props.user} 
+                        cart={this.props.cart} 
+                        postCart={this.props.postCart}
+                        userStatus={this.props.userStatus} />
                 </div>
             </React.Fragment>
         );

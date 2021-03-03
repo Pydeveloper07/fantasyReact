@@ -764,10 +764,6 @@ footer img.right {
 }
 
 .order-block .date-block span {
-	/* position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%); */
 	font-size: 1em;
 	font-weight: bold;
 	color: white;
@@ -919,4 +915,11 @@ section.reviews{
 }
 .owl-stage{
 	display:flex;
+}
+.message{
+	position:fixed;
+	top: 50px;
+	right: 10px;
+	width: 25%;
+	z-index: 9999;
 }

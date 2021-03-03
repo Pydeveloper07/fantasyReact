@@ -104,7 +104,7 @@ class SectionDiscountFoods extends Component{
         }
         const discountFoods = this.props.discountFoods.map((food) => {
             return(
-                <Card key={food.id} food={food}/>
+                <Card key={food.id} food={food} isLoggedIn={this.props.isLoggedIn} addToCart={this.props.addToCart} />
             );
         });
         return(
@@ -242,7 +242,9 @@ class Home extends Component{
                     <SectionOurWork />
                     <SectionFeatures />
                     <SectionDailyFood />
-                    <SectionDiscountFoods discountFoods={this.props.discountFoods} />
+                    <SectionDiscountFoods discountFoods={this.props.discountFoods} 
+                        isLoggedIn={this.props.isLoggedIn}
+                        addToCart={this.props.addToCart} />
                 </div>
                 <SectionReviews reviews={this.props.reviews} 
                                 isLoading={this.props.isLoading} 

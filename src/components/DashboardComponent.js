@@ -5,6 +5,7 @@ import {faUserCircle, faPhone, faMapMarker, faWallet} from '@fortawesome/fontawe
 import { faMailBulk, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import EditProfile from './EditProfileComponent';
 import baseUrl from '../redux/baseUrl';
+import CountTo from 'react-count-to';
 
 const DashboardHeader = () => {
     return(
@@ -64,12 +65,16 @@ const UserInfo = (props) => {
                                 updateUserDetails={props.updateUserDetails} />
                     <div className="col-12 status mt-2">
                         <div className="vaucher">
+                            {props.userStatus && 
                             <h3 className="type text-center text-uppercase">
-                                None
+                                {props.userStatus.status}
                             </h3>
+                            }
+                            {props.userStatus && 
                             <p className="value text-danger text-center">
-                                0% off for any order                           
+                                {props.userStatus.status_bonus}% off for any order                           
                             </p>
+                            }
                         </div>
                         <h4 className="text-center text-uppercase text-info">Status</h4>
                     </div>
@@ -79,22 +84,25 @@ const UserInfo = (props) => {
     );
 }
 
-const SectionStatistics = () => {
+const SectionStatistics = (props) => {
     return(
         <section className="statistics">
             <div className="row">
                 <div className="col-md-3 col-sm-12"></div>
                 <div className="col-md-3 col-sm-12">
                     <div className="item" id="total-orders">
-                        <h2 className="value text-left timer" data-from="0" data-to="71" data-speed="1000">0</h2>
+                        <h2 className="value text-left">
+                            <CountTo from={0} to={props.userStatus && props.userStatus.total_orders} speed={1000} />
+                        </h2>
                         <p className="title">Total orders</p>
                         <FontAwesomeIcon icon={faShoppingCart} className="fa-3x custom-i"></FontAwesomeIcon>
                     </div>
                 </div>
                 <div className="col-md-3 col-sm-12">
                     <div className="item" id="total-expenses">
-                        <h2 className="value text-left"><span className="timer" data-from="0" data-to="10000"
-                                data-speed="2000">0</span></h2>
+                        <h2 className="value text-left">
+                            <CountTo from={0} to={props.userStatus && props.userStatus.total_expenses} speed={2000} />
+                        </h2>
                         <p className="title">Total expenses</p>
                         <FontAwesomeIcon icon={faWallet} className="fa-3x custom-i"></FontAwesomeIcon>
                     </div>
@@ -208,8 +216,9 @@ class Dashboard extends Component{
                 <div className="container">
                     <UserInfo user={this.props.user}
                             resetEditProfileForm={this.props.resetEditProfileForm}
-                            updateUserDetails={this.props.updateUserDetails} />
-                    <SectionStatistics />
+                            updateUserDetails={this.props.updateUserDetails}
+                            userStatus={this.props.userStatus} />
+                    <SectionStatistics userStatus={this.props.userStatus} />
                     <SectionActiveTableOrders orders={this.props.userOrderedTables} />
                     <SectionHistory orderHistory={this.props.orderHistory} />
                 </div>

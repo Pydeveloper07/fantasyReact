@@ -91,7 +91,7 @@ const SectionFoods = (props) => {
             return(
                 <div className="col-md-4 col-lg-4 col-sm-6 col-xs-12" key={food.id}>
                     <div className="item">
-                        <Card food={food} addToCart={props.addToCart} />
+                        <Card food={food} addToCart={props.addToCart} isLoggedIn={props.isLoggedIn} />
                     </div>
                 </div>
             );
@@ -123,7 +123,8 @@ class Menu extends Component{
                     <SectionFoods foods={this.props.foods} 
                                 errMsg={this.props.errMsgFoods} 
                                 types={this.props.types}
-                                addToCart={this.props.addToCart} />
+                                addToCart={this.props.addToCart}
+                                isLoggedIn={this.props.isLoggedIn} />
                 </div>
             </React.Fragment>
         );
